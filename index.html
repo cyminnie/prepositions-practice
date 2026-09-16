@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prepositions Practice</title>
+<style>
+  :root { --green:#1a7f37; --green-bg:#d9f3e1; --red:#c62828; --red-bg:#ffe3e3; --accent:#4f6ef7; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft JhengHei", sans-serif;
+    background: #f4f6fb; color: #1f2430;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 24px 16px 80px; }
+  header {
+    background: #fff; border: 1px solid #e3e8f0; border-radius: 14px; padding: 20px 22px;
+    box-shadow: 0 2px 10px rgba(20,30,60,.05); position: sticky; top: 12px; z-index: 5;
+  }
+  h1 { margin: 0 0 6px; font-size: 22px; }
+  .sub { color: #6b7280; font-size: 13px; margin-bottom: 12px; }
+  .scorebar { font-size: 15px; margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .scorebar b { color: var(--green); }
+  .actions { display: flex; gap: 8px; }
+  button.action {
+    border: 1px solid #cfd6e4; background: #fff; border-radius: 8px; padding: 6px 14px;
+    font-size: 14px; cursor: pointer; color: #334;
+  }
+  button.action:hover { background: #f0f3ff; border-color: var(--accent); }
+  section {
+    background: #fff; border: 1px solid #e3e8f0; border-radius: 14px; padding: 20px 22px;
+    margin-top: 18px; box-shadow: 0 2px 10px rgba(20,30,60,.04);
+  }
+  section h2 { margin: 0 0 4px; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+  section .tag { font-size: 12px; color: #6b7280; font-weight: normal; }
+  ol { margin: 14px 0 0; padding-left: 24px; }
+  li { font-size: 17px; line-height: 2.0; margin-bottom: 10px; }
+  .bk {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;
+    min-width: 52px; padding: 1px 8px; margin: 0 2px;
+    background: #f0f2f7; border: 1px dashed #b6bfce; border-radius: 6px;
+    color: #8a93a6; cursor: pointer; user-select: none; vertical-align: middle;
+    transition: background .12s, border-color .12s;
+  }
+  .bk:hover { background: #e8ecf6; border-color: var(--accent); color: #4a5a9c; }
+  .bk.open { background: #eef2ff; border-color: var(--accent); border-style: solid; }
+  button.choice {
+    font: inherit; font-size: 15px; padding: 0 9px; border-radius: 6px; cursor: pointer;
+    border: 1px solid #cfd6e4; background: #fff; color: #334;
+  }
+  button.choice:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .fill.correct { color: var(--green); background: var(--green-bg); padding: 0 9px; border-radius: 6px; font-weight: 600; }
+  .fill.wrong { color: var(--red); background: var(--red-bg); padding: 0 9px; border-radius: 6px; font-weight: 600; }
+  .hint { color: var(--green); font-weight: 700; }
+  .hint-zh { color: #6b7280; font-size: 14px; margin-left: 4px; }
+  footer { text-align: center; color: #9aa3b2; font-size: 12px; margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Prepositions Practice</h1>
+    <div class="sub">點擊空格（____）選擇答案：答對變綠；答錯變紅，並顯示正確答案及簡單中文解釋。Click a blank and pick an answer for instant feedback.</div>
+    <div class="scorebar">
+      <span>Correct 答對: <b id="score">0</b></span>
+      <span>Answered 已答: <span id="answered">0</span></span>
+      <span>Total 總題: <span id="total">0</span></span>
+    </div>
+    <div class="actions">
+      <button class="action" id="reveal">Reveal all 顯示答案</button>
+      <button class="action" id="reset">Reset 重做</button>
+    </div>
+  </header>
+  <div id="exercises"></div>
+  <footer>Prepositions: at / in / on · to / for / from · against · by / of</footer>
+</div>
+
+<script>
+const exercises = [
+  {
+    title: "Exercise 1", choices: ["at", "in", "on"],
+    raw: [
+      "Come [in|進來] and close the door [at|立刻（at once）] once.",
+      "Hold [on|稍等（hold on）] please and Mr Lee will be with you [in|在一段時間後（in a moment）] a moment.",
+      "The show ended [at|在幾點鐘] five minutes past one [in|在下午] the afternoon.",
+      "I met him [in|在場所內] the supermarket [on|在某個場合（on several occasions）] several occasions.",
+      "[In|在那段日子] those days, we lived [in|住在某個地方] a very small hotel.",
+      "[In|最後（in the end）] the end, [at|至少（at least）] least twenty students agreed to help us.",
+      "His office is located [in|在建築物內] a commercial building, [on|在某一層樓] the top floor.",
+      "Although he got up [at|在幾點] half past seven, he got to school [on|準時（on time）] time.",
+      "Everyone [on|在船/車上（on board）] board the ship jumped for joy [at|看到某景象時（at the sight of）] the sight of land.",
+      "We shall arrive [at|到達某地] our destination [in|在某個地區] the New Territories soon.",
+      "You must hand [in|交上（hand in）] your classwork [at|在…結束時] the end of the lesson.",
+      "[On|一…就…（On + -ing）] answering the call, he left the house [in|匆忙地（in a hurry）] a hurry.",
+      "[On|在特定的晚上] the night of May 5, the travellers arrived [in|到達城市/國家] New York.",
+      "We got [on|上車（on the bus）] the bus [at|在中午] noon.",
+      "He is not [in|在家／在裡面] [at|在此刻（at this moment）] this moment; he is out [at|此刻（at the moment）] the moment.",
+      "He looked [at|看著某人/物] the woman [in|吃驚地（in surprise）] surprise.",
+      "[On|平均來說（on average）] average two thirds of the students failed [in|在考試中] the examination.",
+      "[In|依我看（in my opinion）] my opinion, you are too fat. You need to go [on|節食（on a diet）] a diet.",
+      "It has been raining for several days [on|連續地（on end）] end. It is still raining [at|目前（at present）] present.",
+      "He put [on|戴上（眼鏡）] his glasses [in|為了（in order to）] order to read the small prints [in|在報紙上] the newspaper."
+    ]
+  },
+  {
+    title: "Exercise 2", choices: ["to", "for", "from"],
+    raw: [
+      "The prisoner was released [from|從（監獄）釋放] prison yesterday.",
+      "[To|令我驚訝的是（to my surprise）] my surprise, no one failed in the short quiz.",
+      "Manchester is [to|位於…的北方] the north of London.",
+      "Wine is made [from|由…製成（看不出原料）] grapes.",
+      "He has been taken [to|被帶到某地] hospital [for|為了（治療）] treatment.",
+      "He made a birthday card [for|為某人] his mother.",
+      "I am now on the way [to|前往某地] the airport.",
+      "Are you willing to fight [for|為…而戰] your country?",
+      "Do you know that steel is made [from|由…製成（看不出原料）] iron?",
+      "The needle points [to|指向某方向] the north.",
+      "He took some money [from|從（錢包）拿出] his wallet.",
+      "I bought this old stamp [for|以多少錢] a mere ten dollars.",
+      "Walk straight and turn [to|轉向某方向] left when you reach the traffic lights.",
+      "The poor boy has been separated [from|與某人分開] his mother [for|持續一段時間] a few years.",
+      "You may take this medicine [for|治療（病症）] your headache.",
+      "I would like to borrow a tool [from|向某人借] you.",
+      "He often changes [from|從一個…] one job [to|到另一個…] another.",
+      "He has been sick [for|持續一段時間] over two weeks.",
+      "We need to protect children [from|免受（傷害）] violence.",
+      "He often laughs at his friends [for|為了（好玩）] fun."
+    ]
+  },
+  {
+    title: "Exercise 3", choices: ["to", "for", "from", "against"],
+    raw: [
+      "Move [to|往（左邊）] the left and turn round.",
+      "She bought many presents [for|給某人] the children.",
+      "Don't lean [against|靠在…上] the wall; it is not safe.",
+      "He has been absent [from|缺席某處] school [for|持續兩週] two weeks.",
+      "The film was so touching that the audience was moved [to|感動到（流淚）] tears.",
+      "This youth centre provides many different facilities [for|為某人提供] its members.",
+      "He is rowing a boat [against|逆著（水流）] the current.",
+      "He tore the photograph [to|撕成（碎片）] pieces.",
+      "He is learning French [for|為了（工作）] his work.",
+      "[From|從現在起（from now on）] now on, you will be the owner of this house.",
+      "He is a criminal and is acting [against|違反（法律）] the law.",
+      "We will go [to|去某地] Hawaii [for|為了（娛樂）] pleasure.",
+      "The vase fell [to|掉到（地上）] the ground and broke.",
+      "What are you trying to hide [from|瞞著某人] me?",
+      "The tourists will stay at this hotel [for|持續兩週] two weeks.",
+      "Mrs Wong sang her baby [to|唱到（入睡）] sleep.",
+      "The woods extend [to|延伸到（河岸）] the river bank.",
+      "The young woman married the old man [against|違背（意願）] her will.",
+      "Her application is unsuccessful because her age is [against|對…不利] her.",
+      "That little boy mistook a strange woman [for|誤以為是（mistake A for B）] …"
+    ]
+  },
+  {
+    title: "Exercise 4", choices: ["by", "to", "for", "from"],
+    raw: [
+      "We must finish all our work [by|在…之前（by noon）] noon tomorrow.",
+      "[From|根據（我所知）] what I know, we will have a new teacher next month.",
+      "He gave me his old piano [for|免費（for nothing）] nothing.",
+      "We must object [to|反對（object to）] this plan because it costs too much.",
+      "[By|到…時（By the time）] the time we reached home, the house had burnt [to|燒成（灰燼）] ashes.",
+      "The old woman has to work [from|從…到…（from hand to mouth 僅能糊口）] hand [to|（同上）] mouth.",
+      "The fireman got a medal [for|因為（勇敢）] his bravery.",
+      "All the windows were broken [to|破成（碎片）] pieces in the explosion.",
+      "Jimmy often stays away [from|遠離（學校）] school because of illness.",
+      "He had employed more than twenty workers [by|到那時為止（by then）] then.",
+      "Close your eyes and count [to|數到（十）] ten.",
+      "Things have gone [from|從（壞）…] bad [to|到（更糟）…] worse.",
+      "I will stand [by|支持某人] you if you need me.",
+      "The criminal was sent [to|送到（監獄）] prison [for|關（十年）] ten years.",
+      "[To|屬於誰（To whom … belong）] whom does this bicycle belong?",
+      "We shall complete our work [by|在…之前] tomorrow.",
+      "The dog is quite faithful [to|忠於（主人）] its master.",
+      "Please don't translate this letter word [for|逐字地（word for word）] word.",
+      "He is going [to|去（上海）] Shanghai [by|搭（飛機）] air tomorrow.",
+      "I am far [from|完全不（同意）] agreeing with him."
+    ]
+  },
+  {
+    title: "Exercise 5", choices: ["by", "in", "of", "to"],
+    raw: [
+      "I think you must get rid [of|擺脫（壞習慣）] your bad habits.",
+      "Air pollution has given rise [to|導致（give rise to）] many cases of lung diseases.",
+      "He realized that he needed to act more carefully [in|將來（in future）] future.",
+      "The police have decided to accuse him [of|控告某人某事] robbery.",
+      "This road leads [to|通往（體育館）] the new stadium.",
+      "Eggs are sold [by|按…計算（by the dozen 按打計）] the dozen.",
+      "We will spend part [of|…的一部分] our holiday [in|在（加拿大）] Canada.",
+      "I wonder if you can give me the answer [to|…的答案（the answer to）] this question.",
+      "His health is improving day [by|一天一天地] day.",
+      "He could not stop his car [in|及時（in time）] time. It crashed into the back [of|（計程車）的後方] a taxi.",
+      "You need to reply [to|回覆（信件）] this letter as soon as possible.",
+      "[Of|當然（Of course）] course I will help you if I can.",
+      "Three [by|乘以] six equals eighteen.",
+      "[In|關於（in regard to）] regard [to|（同上）] your criticism, I wish to express my views.",
+      "Many people are not conscious [of|意識到（危險）] the dangers around them.",
+      "These two digital cameras differ greatly [in|在（價格）方面] prices.",
+      "Two teenagers robbed him [of|搶走某人的東西（rob sb of sth）] all his money this morning.",
+      "Your jacket smells [of|有…的氣味（smell of）] cigarette smoke.",
+      "He is not awake [to|意識到（機會）] his opportunities.",
+      "The bullet missed the target [by|差了（幾公分）] a few centimetres."
+    ]
+  }
+];
+
+let correctCount = 0, answeredCount = 0, totalBlanks = 0;
+const allBlanks = [];
+
+function display(word, cap) {
+  return cap ? word.charAt(0).toUpperCase() + word.slice(1) : word;
+}
+
+function parseSentence(s) {
+  const tokens = [];
+  const re = /\[([^\]|]+)(?:\|([^\]]*))?\]/g;
+  let last = 0, m;
+  while ((m = re.exec(s))) {
+    if (m.index > last) tokens.push({ t: s.slice(last, m.index) });
+    tokens.push({ blank: m[1].toLowerCase(), cap: m.index === 0, zh: m[2] || "" });
+    last = m.index + m[0].length;
+  }
+  if (last < s.length) tokens.push({ t: s.slice(last) });
+  return tokens;
+}
+
+function updateScore() {
+  document.getElementById("score").textContent = correctCount;
+  document.getElementById("answered").textContent = answeredCount;
+  document.getElementById("total").textContent = totalBlanks;
+}
+
+function closeBlank(btn) {
+  btn.dataset.state = "idle";
+  btn.classList.remove("open");
+  btn.textContent = "____";
+}
+
+function openBlank(btn, exIndex) {
+  if (btn.dataset.state === "done") return;
+  if (btn.dataset.state === "open") { closeBlank(btn); return; }
+  const ans = btn.dataset.answer;
+  const cap = btn.dataset.cap === "1";
+  const zh = btn.dataset.zh || "";
+  const choices = exercises[exIndex].choices;
+  btn.dataset.state = "open";
+  btn.classList.add("open");
+  btn.textContent = "";
+  choices.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.textContent = c;
+    b.addEventListener("click", e => {
+      e.stopPropagation();
+      if (btn.dataset.state !== "open") return;
+      btn.dataset.state = "done";
+      btn.classList.remove("open");
+      btn.textContent = "";
+      if (c === ans) {
+        const s = document.createElement("span");
+        s.className = "fill correct";
+        s.textContent = display(c, cap);
+        btn.appendChild(s);
+        correctCount++;
+      } else {
+        const s = document.createElement("span");
+        s.className = "fill wrong";
+        s.textContent = display(c, cap);
+        btn.appendChild(s);
+        const hint = document.createElement("span");
+        hint.className = "hint";
+        hint.textContent = "→ " + display(ans, cap);
+        btn.appendChild(hint);
+        if (zh) {
+          const z = document.createElement("span");
+          z.className = "hint-zh";
+          z.textContent = zh;
+          btn.appendChild(z);
+        }
+      }
+      answeredCount++;
+      updateScore();
+    });
+    btn.appendChild(b);
+  });
+}
+
+function render() {
+  correctCount = 0; answeredCount = 0; totalBlanks = 0;
+  allBlanks.length = 0;
+  const host = document.getElementById("exercises");
+  host.innerHTML = "";
+
+  exercises.forEach((ex, exIndex) => {
+    const sec = document.createElement("section");
+    const h2 = document.createElement("h2");
+    h2.textContent = ex.title;
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = ex.choices.join(" / ");
+    h2.appendChild(tag);
+    sec.appendChild(h2);
+
+    const ol = document.createElement("ol");
+    ex.raw.forEach(s => {
+      const li = document.createElement("li");
+      parseSentence(s).forEach(tok => {
+        if (tok.t) { li.appendChild(document.createTextNode(tok.t)); return; }
+        const btn = document.createElement("span");
+        btn.className = "bk";
+        btn.dataset.answer = tok.blank;
+        btn.dataset.cap = tok.cap ? "1" : "0";
+        btn.dataset.zh = tok.zh || "";
+        btn.dataset.state = "idle";
+        btn.textContent = "____";
+        btn.addEventListener("click", () => openBlank(btn, exIndex));
+        li.appendChild(btn);
+        allBlanks.push(btn);
+        totalBlanks++;
+      });
+      ol.appendChild(li);
+    });
+    sec.appendChild(ol);
+    host.appendChild(sec);
+  });
+
+  updateScore();
+}
+
+document.getElementById("reveal").addEventListener("click", () => {
+  allBlanks.forEach(btn => {
+    if (btn.dataset.state === "done") return;
+    btn.dataset.state = "done";
+    btn.classList.remove("open");
+    btn.textContent = "";
+    const s = document.createElement("span");
+    s.className = "fill correct";
+    s.textContent = display(btn.dataset.answer, btn.dataset.cap === "1");
+    btn.appendChild(s);
+    if (btn.dataset.zh) {
+      const z = document.createElement("span");
+      z.className = "hint-zh";
+      z.textContent = btn.dataset.zh;
+      btn.appendChild(z);
+    }
+  });
+});
+
+document.getElementById("reset").addEventListener("click", render);
+
+render();
+</script>
+</body>
+</html>
