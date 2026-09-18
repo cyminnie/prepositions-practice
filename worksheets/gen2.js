@@ -90,24 +90,29 @@ function parseCloze(s) {
 
 function buildListening() {
   const letters = ['A', 'B', 'C', 'D'];
-  let body = '<h1>聆聽練習 Listening Practice</h1>';
-  body += '<div class="sub">真人錄音（ELLLO A1）。先開音檔（網址見每單元），聽完作答。</div>';
-  let ans = '<div class="answerkey"><h2>答案 Answer Key</h2>';
+  let body = '<h1>Listening Practice 聆聽練習</h1>';
+  body += '<div class="sub">18 units — monologues + conversations (real recordings). Play the audio in the website&#39;s Listening tab, then answer.</div>';
+  let ans = '<div class="answerkey"><h2>Answer Key 答案</h2>';
 
   LISTENING.forEach((u, ui) => {
-    body += '<div class="ex"><h2>' + esc(u.title) + ' <span style="font-weight:normal;font-size:9.5pt">（' + esc(u.topic) + '）</span></h2>';
-    body += '<div class="note">▶ 音檔：' + esc(u.audio) + '<br>（原文稿可在 ELLLO 頁面查看：' + esc(u.page) + '）</div>';
+    const typelbl = u.type === 'conversation' ? 'Conversation' : 'Monologue';
+    body += '<div class="ex"><h2>' + esc(u.title) + ' <span style="font-weight:normal;font-size:9.5pt">（' + esc(typelbl) + '）</span></h2>';
+    body += '<div class="note">Transcript (ELLLO): ' + esc(u.page) + '</div>';
+
+    // vocabulary (collapsible in the site; printed as a table here)
+    body += '<div style="margin:4pt 0 6pt"><b>Vocabulary 詞彙</b></div>';
+    body += '<div class="w">' + u.vocab.map(v => '<b>' + esc(v[0]) + '</b> — ' + esc(v[1])).join('　') + '</div>';
 
     // prediction
-    body += '<div class="mc"><b>① 聽前預測</b><br>' + esc(u.predict.q) + '</div>';
+    body += '<div class="mc" style="margin-top:6pt"><b>① Prediction</b><br>' + esc(u.predict.q) + '</div>';
     u.predict.opts.forEach((o, j) => { body += '<div class="opt">' + letters[j] + '. ' + esc(o) + '</div>'; });
 
     // keywords
-    body += '<div style="margin-top:6pt"><b>② 關鍵字抓取</b></div>';
+    body += '<div style="margin-top:6pt"><b>② Listen for details</b></div>';
     u.keywords.forEach((k, ki) => { body += '<div class="w">' + (ki + 1) + '. ' + esc(k.q) + ' <span class="bl" style="width:3cm">&nbsp;</span></div>'; });
 
     // cloze
-    body += '<div style="margin-top:6pt"><b>③ 聽寫填空</b></div><div class="w">';
+    body += '<div style="margin-top:6pt"><b>③ Dictation</b></div><div class="w">';
     const segs = parseCloze(u.cloze);
     let clozeAns = [];
     segs.forEach(s => {
@@ -118,14 +123,14 @@ function buildListening() {
 
     // answer key
     ans += '<h3>' + (ui + 1) + '. ' + esc(u.title) + '</h3><div>';
-    ans += '預測：' + letters[u.predict.ans] + '（' + esc(u.predict.opts[u.predict.ans]) + '）<br>';
-    ans += '關鍵字：' + u.keywords.map(k => esc(k.ans.join(' / '))).join('；') + '<br>';
-    ans += '聽寫：' + clozeAns.map(a => esc(a)).join('、');
+    ans += 'Prediction: ' + letters[u.predict.ans] + ' (' + esc(u.predict.opts[u.predict.ans]) + ')<br>';
+    ans += 'Details: ' + u.keywords.map(k => esc(k.ans.join(' / '))).join('; ') + '<br>';
+    ans += 'Dictation: ' + clozeAns.map(a => esc(a)).join(', ');
     ans += '</div>';
   });
   ans += '</div>';
 
-  return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><style>' + CSS + '</style></head><body>' + body + ans + '</body></html>';
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><style>' + CSS + '</style></head><body>' + body + ans + '</body></html>';
 }
 
 /* ---------- plan.pdf ---------- */

@@ -1,148 +1,239 @@
 var LISTENING = [
   {
-    title: "Unit 1 — Ten Things about Me!",
-    topic: "自我介紹",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-001-SARAH-TEN-THINGS.mp3",
+    title: "Unit 1 — Ten Things about Me",
+    type: "monologue", topic: "Talking about yourself",
+    audio: "audio/unit01.mp3",
     page: "https://elllo.org/video/A1BEG/A1-001-SARAH-TEN-THINGS.htm",
-    predict: { q: "這段錄音主要在講甚麼？", opts: ["Sarah 介紹自己與家人", "Sarah 介紹她的房子", "Sarah 介紹她的朋友"], ans: 0, zh: "開頭說「10 things about myself」→ 自我介紹" },
+    vocab: [["mother","母親"],["teacher","老師"],["farmer","農夫"],["daughter","女兒"],["son","兒子"],["brave","勇敢的"],["kind","友善的"],["friendly","友好的"]],
+    predict: { q: "What is the talk about?", opts: ["Sarah and her family", "Sarah's house", "Sarah's friends"], ans: 0 },
     keywords: [
-      { q: "Sarah 的職業是甚麼？（英文）", ans: ["teacher"], zh: "她說「I am also a teacher」" },
-      { q: "Sarah 的女兒幾歲？（數字）", ans: ["seven", "7"], zh: "「My daughter is seven years old」" },
-      { q: "Sarah 的家人來自哪個國家？（英文）", ans: ["usa", "america", "the usa"], zh: "「My family is from the USA」" }
+      { q: "What is Sarah's job?", ans: ["teacher"] },
+      { q: "How old is Sarah's daughter?", ans: ["seven", "7"] },
+      { q: "Where is Sarah's family from?", ans: ["the usa", "usa", "america"] }
     ],
-    cloze: "My family is from the [USA|美國|]. We are [American|美國人|]."
+    cloze: "My family is from the [USA]. We are [American]."
   },
   {
     title: "Unit 2 — What is your name?",
-    topic: "名字",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-002-SYUZAN-NAME.mp3",
+    type: "monologue", topic: "Names",
+    audio: "audio/unit02.mp3",
     page: "https://elllo.org/video/A1BEG/A1-002-SYUZAN-NAME.htm",
-    predict: { q: "講者主要在講甚麼？", opts: ["她名字的意義", "她的國家", "她的工作"], ans: 0, zh: "她反覆提到名字的意義與拼法" },
+    vocab: [["name","名字"],["flower","花"],["common","常見的"],["special","特別的"],["beautiful","美麗的"],["difficult","困難的"]],
+    predict: { q: "What is the talk about?", opts: ["The meaning of her name", "Her country", "Her job"], ans: 0 },
     keywords: [
-      { q: "Syuzan 來自哪個國家？（英文）", ans: ["armenia"], zh: "「I am from Armenia」" },
-      { q: "「Syuzan」這個名字對她來說代表甚麼？（英文）", ans: ["flower"], zh: "「For me, it means flower」" }
+      { q: "Where is Syuzan from?", ans: ["armenia"] },
+      { q: "What does her name mean?", ans: ["flower"] }
     ],
-    cloze: "For me, it means [flower|花|]. Syuzan is a [common|常見的|] name."
+    cloze: "For me, it means [flower]. Syuzan is a [common] name."
   },
   {
     title: "Unit 3 — Where are you from?",
-    topic: "來自哪裡",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-003-BILLIE-WHERE-ARE-YOU-FROM.mp3",
+    type: "monologue", topic: "Countries",
+    audio: "audio/unit03.mp3",
     page: "https://elllo.org/video/A1BEG/A1-003-BILLIE-WHERE-FROM.htm",
-    predict: { q: "Billy 來自哪個國家？", opts: ["South Africa", "Cameroon", "Nigeria"], ans: 1, zh: "「I am from Cameroon」" },
+    vocab: [["ocean","海洋"],["vegetables","蔬菜"],["fish","魚"],["miss","想念"],["near","靠近"]],
+    predict: { q: "Where is Billy from?", opts: ["South Africa", "Cameroon", "Nigeria"], ans: 1 },
     keywords: [
-      { q: "Billy 現在住在哪裡？（英文）", ans: ["south africa"], zh: "「I live in South Africa」" },
-      { q: "Billy 說他們吃很多甚麼？（英文）", ans: ["fish"], zh: "「we eat a lot of fish」" }
+      { q: "Where does Billy live now?", ans: ["south africa"] },
+      { q: "What do they eat a lot of?", ans: ["fish"] }
     ],
-    cloze: "I live in South Africa, but I am from [Cameroon|喀麥隆|]. We eat a lot of [fish|魚|]."
+    cloze: "I live in South Africa, but I am from [Cameroon]. We eat a lot of [fish]."
   },
   {
     title: "Unit 4 — What is your nationality?",
-    topic: "國籍",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-004-DANDARA-NATIONALITY.mp3",
+    type: "monologue", topic: "Nationalities",
+    audio: "audio/unit04.mp3",
     page: "https://elllo.org/video/A1BEG/A1-004-DANDARA-NATIONALITY.htm",
-    predict: { q: "Dandara 是哪國人？", opts: ["巴西人", "美國人", "法國人"], ans: 0, zh: "「I am Brazilian」" },
+    vocab: [["nationality","國籍"],["beach","海灘"],["proud","自豪的"],["carnival","嘉年華"],["samba","森巴舞"]],
+    predict: { q: "What is Dandara's nationality?", opts: ["Brazilian", "American", "French"], ans: 0 },
     keywords: [
-      { q: "Dandara 來自哪個國家？（英文）", ans: ["brazil"], zh: "「I'm from Brazil」" },
-      { q: "巴西人說甚麼語言？（英文）", ans: ["portuguese"], zh: "「People speak Portuguese」" }
+      { q: "Where is Dandara from?", ans: ["brazil"] },
+      { q: "What language do people speak in Brazil?", ans: ["portuguese"] }
     ],
-    cloze: "I am [Brazilian|巴西人|]. Brazil is a big country in [South America|南美洲|]."
+    cloze: "I am [Brazilian]. Brazil is a big country in [South America]."
   },
   {
     title: "Unit 5 — Who are your friends?",
-    topic: "朋友",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-005-DESIREE-FRIENDS.mp3",
+    type: "monologue", topic: "Friends",
+    audio: "audio/unit05.mp3",
     page: "https://elllo.org/video/A1BEG/A1-005-DESIREE-FRIENDS.htm",
-    predict: { q: "這段錄音主要在講甚麼？", opts: ["她的朋友", "她的家庭", "她的寵物"], ans: 0, zh: "開頭「who are your friends?」" },
+    vocab: [["blonde","金色的"],["hair","頭髮"],["funny","有趣的"],["miss","想念"],["short","矮的"]],
+    predict: { q: "What is the talk about?", opts: ["Her friends", "Her family", "Her pets"], ans: 0 },
     keywords: [
-      { q: "誰有一頭金髮？（英文名）", ans: ["mandy"], zh: "「Mandy has blonde hair」" },
-      { q: "Lisa 住在哪裡？（英文）", ans: ["wales"], zh: "「Lisa lives all the way over in Wales」" }
+      { q: "Who has blonde hair?", ans: ["mandy"] },
+      { q: "Where does Lisa live?", ans: ["wales"] }
     ],
-    cloze: "My friends are Candace, Lisa and [Mandy|曼蒂|]. Candace has long [brown|棕色|] hair."
+    cloze: "My friends are Candace, Lisa and [Mandy]. Candace has long [brown] hair."
   },
   {
     title: "Unit 6 — Describe a family member",
-    topic: "家庭成員",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-006-NERRY-DESCRIBE-FAMILY.mp3",
+    type: "monologue", topic: "Family",
+    audio: "audio/unit06.mp3",
     page: "https://elllo.org/video/A1BEG/A1-006-NERRY-DESCRIBE-FAMILY.htm",
-    predict: { q: "錄音在描述誰？", opts: ["她的妹妹", "她的媽媽", "她的朋友"], ans: 0, zh: "「my little sister」" },
+    vocab: [["sister","姊妹"],["shorter","較矮的"],["smile","笑容"],["dance","跳舞"],["far away","遙遠"]],
+    predict: { q: "Who does she describe?", opts: ["Her little sister", "Her mother", "Her friend"], ans: 0 },
     keywords: [
-      { q: "妹妹的頭髮是甚麼顏色？（英文）", ans: ["blonde"], zh: "「My little sister has blonde hair」" },
-      { q: "妹妹喜歡做甚麼？（英文）", ans: ["dance", "dancing"], zh: "「she loves to dance」" }
+      { q: "What colour is her sister's hair?", ans: ["blonde"] },
+      { q: "What does her sister love to do?", ans: ["dance", "dancing"] }
     ],
-    cloze: "My little sister is [shorter|較矮|] than me. She loves to [dance|跳舞|]."
+    cloze: "My little sister is [shorter] than me. She loves to [dance]."
   },
   {
     title: "Unit 7 — Is your house cold in winter?",
-    topic: "房子與天氣",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-007-JULIE-HOUSE-COLD-WINTER.mp3",
+    type: "monologue", topic: "House & weather",
+    audio: "audio/unit07.mp3",
     page: "https://elllo.org/video/A1BEG/A1-007-JULIE-HOUSE-COLD-WINTER.htm",
-    predict: { q: "錄音主要在講？", opts: ["她家冬天的冷暖", "她的衣服", "她的寵物"], ans: 0, zh: "「Is your house cold in winter?」" },
+    vocab: [["heater","暖爐"],["jacket","外套"],["sweater","毛衣"],["warm","溫暖的"],["winter","冬天"],["summer","夏天"]],
+    predict: { q: "What is the talk about?", opts: ["Her house in winter and summer", "Her clothes", "Her pets"], ans: 0 },
     keywords: [
-      { q: "冬天她家很？", ans: ["cold"], zh: "「My house is very cold in winter」" },
-      { q: "夏天她家很？", ans: ["hot"], zh: "「In summer, it is very hot」" }
+      { q: "What is her house like in winter?", ans: ["cold"] },
+      { q: "What is it like in summer?", ans: ["hot"] }
     ],
-    cloze: "My house is very cold in winter, but my [heater|暖爐|] is warm."
+    cloze: "My house is very cold in winter, but my [heater] is warm."
   },
   {
     title: "Unit 8 — What is in your house?",
-    topic: "家居用品",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-008-SARAH-HOUSE.mp3",
+    type: "monologue", topic: "Things at home",
+    audio: "audio/unit08.mp3",
     page: "https://elllo.org/video/A1BEG/A1-008-SARAH-HOUSE.htm",
-    predict: { q: "錄音在講家裡的甚麼？", opts: ["電器", "食物", "衣服"], ans: 0, zh: "提到 washing machine、fridge 等電器" },
+    vocab: [["washing machine","洗衣機"],["fridge","雪櫃"],["stove","爐"],["vacuum cleaner","吸塵機"],["air conditioner","冷氣機"],["microwave","微波爐"]],
+    predict: { q: "What is the talk about?", opts: ["Things in her house", "Food", "Clothes"], ans: 0 },
     keywords: [
-      { q: "Sarah 想要更大的甚麼？（英文）", ans: ["stove"], zh: "「I want a bigger stove」" },
-      { q: "Sarah 沒有哪樣東西？（英文）", ans: ["electric toaster", "toaster"], zh: "「I don't have an electric toaster」" }
+      { q: "What does she want to be bigger?", ans: ["stove"] },
+      { q: "What does she NOT have?", ans: ["electric toaster", "toaster"] }
     ],
-    cloze: "I have a washing machine. I also have a [fridge|雪櫃|]."
+    cloze: "I have a washing machine. I also have a [fridge]."
   },
   {
     title: "Unit 9 — Where do you go in the morning?",
-    topic: "日常生活",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-009-NERRY-WHAT-DO-MORNING.mp3",
+    type: "monologue", topic: "Daily routine",
+    audio: "audio/unit09.mp3",
     page: "https://elllo.org/video/A1BEG/A1-009-NERRY-WHAT-DO-MORNING.htm",
-    predict: { q: "Neri 早上會去哪裡？", opts: ["健身房", "學校", "商店"], ans: 0, zh: "「In the morning I go to the gym」" },
+    vocab: [["gym","健身房"],["treadmill","跑步機"],["weights","啞鈴"],["exercise","運動"],["sweaty","流汗的"]],
+    predict: { q: "Where does Neri go in the morning?", opts: ["The gym", "School", "The shop"], ans: 0 },
     keywords: [
-      { q: "她在跑步機上做甚麼？（英文）", ans: ["walk", "walks"], zh: "「I walk on the treadmill」" },
-      { q: "她怎麼去健身房？（英文）", ans: ["walk"], zh: "「I walk to the gym」" }
+      { q: "What does she do on the treadmill?", ans: ["walk", "walks"] },
+      { q: "How does she get to the gym?", ans: ["walk"] }
     ],
-    cloze: "In the morning I go to the [gym|健身房|]. I walk on the [treadmill|跑步機|]."
+    cloze: "In the morning I go to the [gym]. I walk on the [treadmill]."
   },
   {
     title: "Unit 10 — Where are your friends from?",
-    topic: "朋友的國家",
-    audio: "https://elllo.org/Audio/1ME-A1BEG/A1-010-JULIE-WHERE-FRIENDS-FROM.mp3",
+    type: "monologue", topic: "Countries",
+    audio: "audio/unit10.mp3",
     page: "https://elllo.org/video/A1BEG/A1-010-JULIE-WHERE-FRIENDS-FROM.htm",
-    predict: { q: "錄音在講甚麼？", opts: ["朋友來自的國家", "朋友的職業", "朋友的名字"], ans: 0, zh: "「Where are your friends from?」" },
+    vocab: [["Argentina","阿根廷"],["Venezuela","委內瑞拉"],["Spain","西班牙"],["France","法國"]],
+    predict: { q: "What is the talk about?", opts: ["Where her friends are from", "Her friends' jobs", "Her friends' names"], ans: 0 },
     keywords: [
-      { q: "Julie 的朋友來自哪個國家？（任寫一個）", ans: ["america", "argentina", "venezuela", "spain"], zh: "America、Argentina、Venezuela 或 Spain" },
-      { q: "Julie 沒有來自哪個國家的朋友？（英文）", ans: ["france"], zh: "「I don't have friends from France」" }
+      { q: "Name one country her friends are from.", ans: ["america", "argentina", "venezuela", "spain"] },
+      { q: "Which country does she have no friends from?", ans: ["france"] }
     ],
-    cloze: "I don't have friends from [France|法國|]."
+    cloze: "I don't have friends from [France]."
   },
   {
     title: "Unit 11 — Do you have any pets?",
-    topic: "寵物",
-    audio: "https://elllo.org/Audio/1ME-A2BEG/A2-003-HAZAL-HAVE-ANY-PETS.mp3",
+    type: "monologue", topic: "Pets",
+    audio: "audio/unit11.mp3",
     page: "https://elllo.org/video/A2BEG/A2-003-HAZAL-HAVE-ANY-PETS.htm",
-    predict: { q: "Hazal 有甚麼寵物？", opts: ["貓", "狗", "鳥"], ans: 0, zh: "「I have a cat」" },
+    vocab: [["pet","寵物"],["cat","貓"],["soft","柔軟的"],["toy","玩具"],["ball","球"],["dog","狗"]],
+    predict: { q: "What pet does Hazal have?", opts: ["A cat", "A dog", "A bird"], ans: 0 },
     keywords: [
-      { q: "貓的名字叫甚麼？（英文）", ans: ["lily"], zh: "「My cat's name is Lily」" },
-      { q: "貓最喜歡的玩具是甚麼？（英文）", ans: ["ball", "a ball"], zh: "「Her favorite toy is a ball」" }
+      { q: "What is her cat's name?", ans: ["lily"] },
+      { q: "What is her cat's favourite toy?", ans: ["ball", "a ball"] }
     ],
-    cloze: "My cat's name is [Lily|莉莉|]. She is [four|四|] years old."
+    cloze: "My cat's name is [Lily]. She is [four] years old."
   },
   {
     title: "Unit 12 — What do you eat for breakfast?",
-    topic: "早餐",
-    audio: "https://elllo.org/Audio/1ME-A2BEG/A2-022-HAZAL-WHAT-EAT-BREAKFAST.mp3",
+    type: "monologue", topic: "Food",
+    audio: "audio/unit12.mp3",
     page: "https://elllo.org/video/A2BEG/A2-022-HAZAL-WHAT-EAT-BREAKFAST.htm",
-    predict: { q: "錄音在講哪一餐？", opts: ["早餐", "午餐", "晚餐"], ans: 0, zh: "「What do you eat for breakfast?」" },
+    vocab: [["breakfast","早餐"],["bread","麵包"],["eggs","雞蛋"],["cheese","芝士"],["oatmeal","麥片"],["energy","能量"]],
+    predict: { q: "Which meal is the talk about?", opts: ["Breakfast", "Lunch", "Dinner"], ans: 0 },
     keywords: [
-      { q: "Hazal 早餐吃甚麼？（任寫一樣）", ans: ["bread", "eggs", "egg", "cheese"], zh: "bread、eggs 或 cheese" },
-      { q: "她喝甚麼飲品？（英文）", ans: ["coffee"], zh: "「I like to drink coffee」" }
+      { q: "Name one food she eats for breakfast.", ans: ["bread", "eggs", "egg", "cheese"] },
+      { q: "What does she drink?", ans: ["coffee"] }
     ],
-    cloze: "I eat bread, eggs, and cheese for breakfast because bread keeps me [full|飽|]."
+    cloze: "I eat bread, eggs, and cheese for breakfast because bread keeps me [full]."
+  },
+  {
+    title: "Unit 13 — Small Talk (Yes/No Questions)",
+    type: "conversation", topic: "Conversation — everyday life",
+    audio: "audio/unit13.mp3",
+    page: "https://elllo.org/class/A1/A1-02-Be-Yes-No-Questions.html",
+    vocab: [["air-con","冷氣"],["hungry","肚餓的"],["expensive","昂貴的"],["cheap","便宜的"],["move","搬家"],["shoe","鞋"]],
+    predict: { q: "These short talks are about...", opts: ["everyday things (house, shoes, food)", "sports", "movies"], ans: 0 },
+    keywords: [
+      { q: "What does the man turn on?", ans: ["air-con", "the air-con", "aircon"] },
+      { q: "Are the woman's shoes expensive?", ans: ["no"] },
+      { q: "What does the man want when he is hungry?", ans: ["pizza"] }
+    ],
+    cloze: "Is the air-con on? No, it is [off]."
+  },
+  {
+    title: "Unit 14 — Likes and Dislikes",
+    type: "conversation", topic: "Conversation — food & drink",
+    audio: "audio/unit14.mp3",
+    page: "https://elllo.org/class/A1/A1-03-Likes-Fruits.html",
+    vocab: [["ice cream","雪糕"],["pizza","薄餅"],["tea","茶"],["juice","果汁"],["coffee","咖啡"],["strawberry","士多啤梨"],["watermelon","西瓜"]],
+    predict: { q: "What do the speakers talk about?", opts: ["Foods and drinks they like", "Sports", "School"], ans: 0 },
+    keywords: [
+      { q: "What drinks does the man like?", ans: ["coffee", "hot chocolate"] },
+      { q: "What fruit does the man like?", ans: ["strawberries", "strawberry", "watermelon"] }
+    ],
+    cloze: "What foods do you like? I like fish, vegetables, and [bananas]."
+  },
+  {
+    title: "Unit 15 — Daily Routines",
+    type: "conversation", topic: "Conversation — jobs & routine",
+    audio: "audio/unit15.mp3",
+    page: "https://elllo.org/class/A1/A1-04-Verbs.html",
+    vocab: [["wake up","起牀"],["shower","淋浴"],["get dressed","穿衣服"],["breakfast","早餐"],["teach","教導"],["maths","數學"]],
+    predict: { q: "What do the speakers talk about?", opts: ["Daily routines and jobs", "Food", "Weather"], ans: 0 },
+    keywords: [
+      { q: "What time does the woman get up?", ans: ["six", "6"] },
+      { q: "What does the man do at work?", ans: ["fix and sell bikes", "fixes and sells bikes", "fixes bikes"] }
+    ],
+    cloze: "I wake up, I take a shower, I get [dressed]."
+  },
+  {
+    title: "Unit 16 — Sports and Pets",
+    type: "conversation", topic: "Conversation — sports & pets",
+    audio: "audio/unit16.mp3",
+    page: "https://elllo.org/class/A1/A1-05-Verb-Yes-No-Questions.html",
+    vocab: [["baseball","棒球"],["team","隊伍"],["pets","寵物"],["cat","貓"],["dog","狗"],["yard","院子"]],
+    predict: { q: "What do the speakers talk about?", opts: ["Sports and pets", "School", "Food"], ans: 0 },
+    keywords: [
+      { q: "What sport does the woman love?", ans: ["baseball"] },
+      { q: "What pet does the man have?", ans: ["dog", "a dog"] }
+    ],
+    cloze: "I don't have a cat, but I have a [dog]."
+  },
+  {
+    title: "Unit 17 — Family Jobs",
+    type: "conversation", topic: "Conversation — family",
+    audio: "audio/unit17.mp3",
+    page: "https://elllo.org/class/A1/A1-06-Third-Person-Singular.html",
+    vocab: [["clothing","衣服"],["shop","商店"],["mall","商場"],["university","大學"],["engineering","工程"],["campus","校園"],["apartment","公寓"]],
+    predict: { q: "What do the speakers talk about?", opts: ["Family members and their jobs", "Food", "Sports"], ans: 0 },
+    keywords: [
+      { q: "What does the man's mom sell?", ans: ["women's clothing", "clothing", "womens clothing"] },
+      { q: "What does the woman's brother study?", ans: ["engineering"] }
+    ],
+    cloze: "She has a small shop in the [mall]."
+  },
+  {
+    title: "Unit 18 — Describing Things",
+    type: "conversation", topic: "Conversation — adjectives",
+    audio: "audio/unit18.mp3",
+    page: "https://elllo.org/class/A1/A1-07-Adjectives.html",
+    vocab: [["fun","有趣的"],["interesting","有趣的"],["difficult","困難的"],["easy","容易的"],["boring","沉悶的"],["strict","嚴厲的"],["friendly","友善的"]],
+    predict: { q: "What do the speakers describe?", opts: ["Classes, food and the weather", "Sports", "Travel"], ans: 0 },
+    keywords: [
+      { q: "What is the man's math class like?", ans: ["easy", "boring"] },
+      { q: "What does the man order?", ans: ["mocha", "ice mocha", "cafe mocha", "a cafe mocha"] }
+    ],
+    cloze: "My English class is fun, but it is [difficult]."
   }
 ];
 

@@ -1306,6 +1306,35 @@ function renderVocab() {
   return wrap;
 }
 
+function renderPredictMc(item, st) {
+  const box = document.createElement('div');
+  box.className = 'mc-item'; box.style.marginBottom = '12px';
+  const q = document.createElement('div'); q.className = 'mc-q'; q.textContent = item.q;
+  box.appendChild(q);
+  const opts = document.createElement('div'); opts.className = 'mc-opts';
+  const letters = ['A', 'B', 'C', 'D'];
+  item.opts.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'mcopt'; b.type = 'button'; b.textContent = letters[i] + '.  ' + o;
+    b.addEventListener('click', () => {
+      if (b.disabled) return;
+      opts.querySelectorAll('button').forEach(x => x.disabled = true);
+      if (i === item.ans) { b.classList.add('correct'); st.correct++; }
+      else { b.classList.add('wrong'); opts.querySelectorAll('button')[item.ans].classList.add('correct'); }
+      const fb = document.createElement('div'); fb.className = 'fb'; fb.style.marginTop = '6px';
+      if (i === item.ans) fb.innerHTML = '<span class="badge ok">✓ Correct</span>';
+      else fb.innerHTML = '<span class="badge no">✗ Wrong</span> <span class="hint">Answer: ' + letters[item.ans] + '</span>';
+      box.appendChild(fb);
+      st.answered++;
+      updateScore(st);
+    });
+    opts.appendChild(b);
+  });
+  box.appendChild(opts);
+  st.total++;
+  return box;
+}
+
 function renderListening() {
   const st = makeSubjectState({ key: 'listening', label: '聆聽' });
   LIVE['listening'] = st;
@@ -1314,46 +1343,62 @@ function renderListening() {
 
   const head = document.createElement('div');
   head.className = 'subject-head';
-  head.innerHTML = '<h1>聆聽 Listening</h1>' +
-    '<div class="sub">真人錄音（ELLLO A1）＋ 數字／拼字基本功。點「▶ 播放真人音檔」在新視窗聽，再回來作答。</div>' +
-    '<div class="scorebar"><span>Correct 答對: <b id="score-listening">0</b></span><span>Answered 已答: <span id="answered-listening">0</span></span><span>Total 總題: <span id="total-listening">0</span></span></div>' +
-    '<div class="actions"><button class="action" data-reset>Reset 重做</button></div>';
+  head.innerHTML = '<h1>Listening 聆聽</h1>' +
+    '<div class="sub">18 units — monologues + conversations (real recordings). Listen, then answer. Click “Vocabulary” to look up words.</div>' +
+    '<div class="scorebar"><span>Correct: <b id="score-listening">0</b></span><span>Answered: <span id="answered-listening">0</span></span><span>Total: <span id="total-listening">0</span></span></div>' +
+    '<div class="actions"><button class="action" data-reset>Reset</button></div>';
   wrap.appendChild(head);
 
   LISTENING.forEach((u) => {
     const sec = document.createElement('section'); sec.className = 'ex';
     const h2 = document.createElement('h2');
     h2.textContent = u.title;
-    const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = u.topic;
+    const tag = document.createElement('span'); tag.className = 'tag';
+    tag.textContent = u.type === 'conversation' ? '🗣 conversation' : '👤 monologue';
     h2.appendChild(tag);
     sec.appendChild(h2);
 
-    const links = document.createElement('div');
-    links.style.margin = '4px 0 10px';
-    links.innerHTML = '<a class="action" href="' + u.audio + '" target="_blank" rel="noopener">▶ 播放真人音檔</a> ' +
-                      '<a class="action" href="' + u.page + '" target="_blank" rel="noopener">看原文稿（ELLLO）</a>';
-    sec.appendChild(links);
+    const audio = document.createElement('audio');
+    audio.controls = true; audio.preload = 'none'; audio.src = u.audio;
+    audio.style.width = '100%'; audio.style.maxWidth = '420px'; audio.style.display = 'block'; audio.style.margin = '4px 0 6px';
+    sec.appendChild(audio);
+
+    const tr = document.createElement('div');
+    tr.innerHTML = '<a class="action" href="' + u.page + '" target="_blank" rel="noopener">Transcript (ELLLO)</a>';
+    tr.style.marginBottom = '6px';
+    sec.appendChild(tr);
+
+    const vocabBtn = document.createElement('button');
+    vocabBtn.className = 'recap-toggle'; vocabBtn.type = 'button'; vocabBtn.textContent = '📖 Vocabulary';
+    sec.appendChild(vocabBtn);
+    const vocabDiv = document.createElement('div'); vocabDiv.className = 'recap';
+    vocabDiv.innerHTML = '<b>Vocabulary</b><br>' + u.vocab.map(v => '<b>' + v[0] + '</b> — ' + v[1]).join('<br>');
+    sec.appendChild(vocabDiv);
+    vocabBtn.addEventListener('click', () => {
+      vocabDiv.classList.toggle('open');
+      vocabBtn.textContent = vocabDiv.classList.contains('open') ? '收起 Vocabulary' : '📖 Vocabulary';
+    });
 
     const pl = document.createElement('div'); pl.className = 'lu-q';
-    pl.innerHTML = '<span class="lbl">① 聽前預測</span>';
+    pl.innerHTML = '<span class="lbl">① Prediction</span>';
     sec.appendChild(pl);
-    sec.appendChild(renderMc({ q: u.predict.q, opts: u.predict.opts, ans: u.predict.ans, zh: u.predict.zh, recap: null }, st));
+    sec.appendChild(renderPredictMc({ q: u.predict.q, opts: u.predict.opts, ans: u.predict.ans }, st));
 
     const kw = document.createElement('div'); kw.className = 'lu-q';
-    kw.innerHTML = '<span class="lbl">② 關鍵字抓取</span>';
+    kw.innerHTML = '<span class="lbl">② Listen for details</span>';
     sec.appendChild(kw);
     u.keywords.forEach((k, ki) => {
       const row = document.createElement('div'); row.className = 'quiz-q';
-      const z = document.createElement('span'); z.className = 'zh'; z.style.minWidth = '0'; z.style.flex = '1 1 230px'; z.style.fontWeight = '400';
+      const z = document.createElement('span'); z.className = 'zh'; z.style.minWidth = '0'; z.style.flex = '1 1 240px'; z.style.fontWeight = '400';
       z.textContent = (ki + 1) + '. ' + k.q;
-      const tok = { blank: true, answers: k.ans.map(norm), primary: k.ans[0], base: null, zh: k.zh, recap: null, cap: false };
+      const tok = { blank: true, answers: k.ans.map(norm), primary: k.ans[0], base: null, zh: '', recap: null, cap: false };
       row.appendChild(z);
       row.appendChild(renderInputBlank(tok, st));
       sec.appendChild(row);
     });
 
     const cl = document.createElement('div'); cl.className = 'lu-q';
-    cl.innerHTML = '<span class="lbl">③ 聽寫填空</span>';
+    cl.innerHTML = '<span class="lbl">③ Dictation</span>';
     sec.appendChild(cl);
     const clozeDiv = document.createElement('div'); clozeDiv.style.fontSize = '16px';
     parseMarkup(u.cloze).forEach(tok => {
@@ -1364,36 +1409,36 @@ function renderListening() {
     wrap.appendChild(sec);
   });
 
-  // 基本功 drills
+  // Basic dictation drills
   const dsec = document.createElement('section'); dsec.className = 'ex';
-  dsec.innerHTML = '<h2>聽寫基本功<span class="tag">數字 · 拼字（電腦語音）</span></h2>' +
-    '<div class="instr">這兩項用電腦語音（非真人）練習——數字與拼字是香港聆聽卷最常出的題型。按 🔊 聽，輸入答案後按 Enter。</div>';
+  dsec.innerHTML = '<h2>Basic Dictation<span class="tag">numbers · spelling (computer voice)</span></h2>' +
+    '<div class="instr">Practise numbers and spelling with a computer voice. Press 🔊, type your answer, then press Enter.</div>';
 
   const numBox = document.createElement('div'); numBox.className = 'drill';
-  numBox.innerHTML = '<b>數字 Numbers</b><div class="drill-row"><button class="action" type="button" data-num-play>🔊 聽數字</button>' +
-    '<input type="text" placeholder="輸入數字，如 23" data-num-inp><span data-num-fb></span></div>';
+  numBox.innerHTML = '<b>Numbers</b><div class="drill-row"><button class="action" type="button" data-num-play>🔊 Listen</button>' +
+    '<input type="text" placeholder="Type the number, e.g. 23" data-num-inp><span data-num-fb></span></div>';
   dsec.appendChild(numBox);
   let currentNum = null;
   numBox.querySelector('[data-num-play]').addEventListener('click', () => { currentNum = Math.floor(Math.random() * 99) + 1; speak(numberToWords(currentNum), 0.8); });
   numBox.querySelector('[data-num-inp]').addEventListener('keydown', e => {
     if (e.key === 'Enter') {
       const v = e.target.value.trim(); const fb = numBox.querySelector('[data-num-fb]');
-      if (v === String(currentNum)) fb.innerHTML = '<span class="badge ok">✓ 答對</span>';
-      else fb.innerHTML = '<span class="badge no">✗ 答錯</span> <span class="hint">→ ' + currentNum + '</span>';
+      if (v === String(currentNum)) fb.innerHTML = '<span class="badge ok">✓ Correct</span>';
+      else fb.innerHTML = '<span class="badge no">✗ Wrong</span> <span class="hint">→ ' + currentNum + '</span>';
     }
   });
 
   const spBox = document.createElement('div'); spBox.className = 'drill';
-  spBox.innerHTML = '<b>拼字 Spelling</b><div class="drill-row"><button class="action" type="button" data-sp-play>🔊 聽拼字</button>' +
-    '<input type="text" placeholder="輸入拼出的單字" data-sp-inp><span data-sp-fb></span></div>';
+  spBox.innerHTML = '<b>Spelling</b><div class="drill-row"><button class="action" type="button" data-sp-play>🔊 Listen</button>' +
+    '<input type="text" placeholder="Type the word" data-sp-inp><span data-sp-fb></span></div>';
   dsec.appendChild(spBox);
   let currentWord = null;
   spBox.querySelector('[data-sp-play]').addEventListener('click', () => { currentWord = SPELLING_WORDS[Math.floor(Math.random() * SPELLING_WORDS.length)]; speak(currentWord.toUpperCase().split('').join(' '), 0.8); });
   spBox.querySelector('[data-sp-inp]').addEventListener('keydown', e => {
     if (e.key === 'Enter') {
       const v = norm(e.target.value); const fb = spBox.querySelector('[data-sp-fb]');
-      if (v === norm(currentWord)) fb.innerHTML = '<span class="badge ok">✓ 答對</span>';
-      else fb.innerHTML = '<span class="badge no">✗ 答錯</span> <span class="hint">→ ' + currentWord + '</span>';
+      if (v === norm(currentWord)) fb.innerHTML = '<span class="badge ok">✓ Correct</span>';
+      else fb.innerHTML = '<span class="badge no">✗ Wrong</span> <span class="hint">→ ' + currentWord + '</span>';
     }
   });
   wrap.appendChild(dsec);
