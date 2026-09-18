@@ -1,39 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prepositions Practice</title>
+<title>英文文法練習 — 介詞 & 時態</title>
 <style>
-  :root { --green:#1a7f37; --green-bg:#d9f3e1; --red:#c62828; --red-bg:#ffe3e3; --accent:#4f6ef7; }
+  :root { --green:#1a7f37; --green-bg:#d9f3e1; --red:#c62828; --red-bg:#ffe3e3; --accent:#4f6ef7; --line:#e3e8f0; }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0; font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft JhengHei", sans-serif;
     background: #f4f6fb; color: #1f2430;
   }
-  .wrap { max-width: 780px; margin: 0 auto; padding: 24px 16px 80px; }
-  header {
-    background: #fff; border: 1px solid #e3e8f0; border-radius: 14px; padding: 20px 22px;
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 216px;
+    background: #1f2430; color: #fff; padding: 20px 14px; overflow-y: auto; z-index: 10;
+  }
+  .sidebar .brand { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+  .sidebar .brand-sub { font-size: 11px; color: #9aa3b2; margin-bottom: 18px; }
+  .sidebar button.tab {
+    display: block; width: 100%; text-align: left; padding: 12px 14px; margin-bottom: 8px;
+    border: none; border-radius: 10px; background: transparent; color: #c7cdd8;
+    font-size: 15px; cursor: pointer; transition: background .15s, color .15s;
+  }
+  .sidebar button.tab:hover { background: #2b3140; color: #fff; }
+  .sidebar button.tab.active { background: var(--accent); color: #fff; font-weight: 600; }
+  .sidebar .tab-note { font-size: 11px; color: #9aa3b2; display: block; margin-top: 2px; font-weight: normal; }
+  .main { margin-left: 216px; padding: 24px 28px 90px; max-width: 940px; }
+  .subject { display: none; }
+  .subject.active { display: block; }
+  .subject-head {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px;
     box-shadow: 0 2px 10px rgba(20,30,60,.05); position: sticky; top: 12px; z-index: 5;
   }
-  h1 { margin: 0 0 6px; font-size: 22px; }
-  .sub { color: #6b7280; font-size: 13px; margin-bottom: 12px; }
-  .scorebar { font-size: 15px; margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .subject-head h1 { margin: 0 0 6px; font-size: 21px; }
+  .subject-head .sub { color: #6b7280; font-size: 13px; margin-bottom: 10px; }
+  .scorebar { font-size: 14px; display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; }
   .scorebar b { color: var(--green); }
-  .actions { display: flex; gap: 8px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
   button.action {
-    border: 1px solid #cfd6e4; background: #fff; border-radius: 8px; padding: 6px 14px;
-    font-size: 14px; cursor: pointer; color: #334;
+    border: 1px solid #cfd6e4; background: #fff; border-radius: 8px; padding: 6px 13px;
+    font-size: 13px; cursor: pointer; color: #334;
   }
   button.action:hover { background: #f0f3ff; border-color: var(--accent); }
-  section {
-    background: #fff; border: 1px solid #e3e8f0; border-radius: 14px; padding: 20px 22px;
+  .jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 4px; }
+  .jump a {
+    font-size: 12px; color: #3b4fbf; text-decoration: none; background: #eef2ff;
+    padding: 3px 10px; border-radius: 999px;
+  }
+  .jump a:hover { background: #dce4ff; }
+  section.ex {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px;
     margin-top: 18px; box-shadow: 0 2px 10px rgba(20,30,60,.04);
   }
-  section h2 { margin: 0 0 4px; font-size: 18px; display: flex; align-items: center; gap: 10px; }
-  section .tag { font-size: 12px; color: #6b7280; font-weight: normal; }
-  ol { margin: 14px 0 0; padding-left: 24px; }
-  li { font-size: 17px; line-height: 2.0; margin-bottom: 10px; }
+  section.ex h2 { margin: 0 0 2px; font-size: 17px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  section.ex .tag { font-size: 12px; color: #6b7280; font-weight: normal; }
+  section.ex .instr { color: #6b7280; font-size: 13px; margin: 4px 0 12px; }
+  ol { margin: 12px 0 0; padding-left: 24px; }
+  li { font-size: 16.5px; line-height: 2.1; margin-bottom: 10px; }
+  .check-row { margin: 10px 0 0; }
+  /* choice blanks */
   .bk {
     display: inline-flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;
     min-width: 52px; padding: 1px 8px; margin: 0 2px;
@@ -48,306 +74,783 @@
     border: 1px solid #cfd6e4; background: #fff; color: #334;
   }
   button.choice:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+  /* type-in blanks */
+  .iw { display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap; vertical-align: middle; }
+  input.ans {
+    width: 150px; font: inherit; font-size: 15px; padding: 3px 8px; border-radius: 7px;
+    border: 1.5px solid #c8d0dd; background: #fff; color: #1f2430; outline: none;
+  }
+  input.ans:focus { border-color: var(--accent); }
+  input.ans.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); font-weight: 600; }
+  input.ans.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+  input.ans.revealed { border-color: #b0b7c3; background: #eef1f6; color: #334; }
   .fill.correct { color: var(--green); background: var(--green-bg); padding: 0 9px; border-radius: 6px; font-weight: 600; }
   .fill.wrong { color: var(--red); background: var(--red-bg); padding: 0 9px; border-radius: 6px; font-weight: 600; }
   .hint { color: var(--green); font-weight: 700; }
-  .hint-zh { color: #6b7280; font-size: 14px; margin-left: 4px; }
-  footer { text-align: center; color: #9aa3b2; font-size: 12px; margin-top: 24px; }
+  .hint-zh { color: #6b7280; font-size: 14px; }
+  .fb { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 14.5px; }
+  .fb .badge { font-weight: 700; }
+  .badge.ok { color: var(--green); }
+  .badge.no { color: var(--red); }
+  /* MC */
+  .mc-q { font-size: 16.5px; margin-bottom: 8px; }
+  .mc-opts { display: flex; flex-direction: column; gap: 6px; margin: 6px 0 8px; }
+  button.mcopt {
+    text-align: left; font: inherit; font-size: 15px; padding: 7px 12px; border-radius: 8px; cursor: pointer;
+    border: 1.5px solid #d5dbe6; background: #fff; color: #334;
+  }
+  button.mcopt:hover { border-color: var(--accent); background: #f5f7ff; }
+  button.mcopt.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); font-weight: 600; }
+  button.mcopt.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+  button.mcopt:disabled { cursor: default; }
+  /* recap card */
+  button.recap-toggle {
+    border: none; background: #fff7e6; color: #b7791f; font-size: 12.5px; padding: 2px 9px;
+    border-radius: 999px; cursor: pointer; border: 1px solid #ffe0a8;
+  }
+  button.recap-toggle:hover { background: #ffefd1; }
+  .recap {
+    display: none; margin: 8px 0 4px; padding: 12px 14px; background: #fffbef;
+    border: 1px solid #f3e2bd; border-radius: 10px; font-size: 14px; line-height: 1.8; color: #5a4a20;
+  }
+  .recap.open { display: block; }
+  .recap b { color: #8a5a00; }
+  footer { text-align: center; color: #9aa3b2; font-size: 12px; margin-top: 26px; }
+  @media (max-width: 820px) {
+    .sidebar { position: static; width: 100%; display: flex; gap: 8px; align-items: center; padding: 12px; flex-wrap: wrap; }
+    .sidebar .brand { margin: 0; }
+    .sidebar .brand-sub { display: none; }
+    .sidebar button.tab { width: auto; flex: 1; margin: 0; padding: 9px 10px; font-size: 14px; }
+    .sidebar .tab-note { display: none; }
+    .main { margin-left: 0; padding: 16px 12px 70px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>Prepositions Practice</h1>
-    <div class="sub">點擊空格（____）選擇答案：答對變綠；答錯變紅，並顯示正確答案及簡單中文解釋。Click a blank and pick an answer for instant feedback.</div>
-    <div class="scorebar">
-      <span>Correct 答對: <b id="score">0</b></span>
-      <span>Answered 已答: <span id="answered">0</span></span>
-      <span>Total 總題: <span id="total">0</span></span>
-    </div>
-    <div class="actions">
-      <button class="action" id="reveal">Reveal all 顯示答案</button>
-      <button class="action" id="reset">Reset 重做</button>
-    </div>
-  </header>
-  <div id="exercises"></div>
-  <footer>Prepositions: at / in / on · to / for / from · against · by / of</footer>
-</div>
+  <aside class="sidebar">
+    <p class="brand">Grammar Practice</p>
+    <p class="brand-sub">介詞 · 時態</p>
+    <button class="tab" data-subject="prepositions">介詞 <span class="tab-note">Prepositions · 5 份</span></button>
+    <button class="tab" data-subject="tenses">時態 <span class="tab-note">Tenses · 10 份</span></button>
+  </aside>
+
+  <div class="main" id="main"></div>
 
 <script>
-const exercises = [
+/* ===================== RECAPS（知識點 recap 字典） ===================== */
+const RECAPS = {
+  /* ---- Tenses ---- */
+  t_simple_present: { title: "簡單現在式 Simple Present", body:
+    "用在：<b>① 習慣／恆真的事實</b>（Water boils at 100°C. 水在 100 度沸騰）<br>" +
+    "<b>② 固定的時間表、行程</b>（The train leaves at 6:45. 火車 6:45 開出）<br>" +
+    "<b>③ 狀態動詞</b>（know 知道、own 擁有、want 想要、like 喜歡、understand 明白）。<br>" +
+    "形式：主語是 he / she / it 時，動詞要加 <b>-s</b>。" },
+  t_state_verbs: { title: "狀態動詞 State Verbs", body:
+    "表示「狀態」的動詞（know, own, want, like, believe, understand, love, need）通常<b>用簡單式，不用進行式</b>。<br>" +
+    "✗ I am knowing → ✓ I know.　✗ She is owning → ✓ She owns." },
+  t_present_continuous: { title: "現在進行式 Present Continuous", body:
+    "用在：<b>① 正在發生</b>（Look! It is raining.）<b>② 暫時的情況</b><br>" +
+    "<b>③ 已安排好的未來計劃</b>（We are having a party next Saturday.）<b>④ 抱怨</b>（He is always complaining.）<br>" +
+    "形式：<b>am / is / are + V-ing</b>。" },
+  t_present_perfect: { title: "現在完成式 Present Perfect", body:
+    "用在：<b>① 過去開始、到現在仍持續</b>（用 for / since：I have lived here since 2018.）<br>" +
+    "<b>② 剛剛完成</b>（just / already）<b>③ 過去動作影響現在</b>（He has lost his keys, so he can't open the door.）<br>" +
+    "<b>④ 經驗</b>（ever / never / yet）<br>形式：<b>have / has + 過去分詞(past participle)</b>。" },
+  t_present_perfect_cont: { title: "現在完成進行式 Present Perfect Continuous", body:
+    "強調「動作<b>一直持續到現在、還沒停</b>」。<br>" +
+    "I have been waiting for an hour.（我已經等了一小時，<b>還在等</b>）<br>" +
+    "形式：<b>have / has been + V-ing</b>。常配 for / since / all day / lately。" },
+  t_simple_past: { title: "簡單過去式 Simple Past", body:
+    "用在「<b>已結束、有明確過去時間</b>」的動作（yesterday、last week、two days ago）。<br>" +
+    "<b>過去的習慣</b>也用簡單過去式（When I was young, I walked to school.）<br>" +
+    "形式：<b>V-ed</b>（不規則動詞要背）" },
+  t_past_continuous: { title: "過去進行式 Past Continuous", body:
+    "用在：<b>① 過去某時刻正在進行</b>（At 3 p.m., he was running.）<br>" +
+    "<b>② 長動作被短動作打斷</b>（I was taking a shower <b>when</b> the phone rang.）<br>" +
+    "<b>③ 兩個動作同時進行</b>（<b>While</b> Mum was cooking, I was watching TV.）<br>" +
+    "形式：<b>was / were + V-ing</b>。" },
+  t_past_perfect: { title: "過去完成式 Past Perfect", body:
+    "用在「兩個過去動作中，<b>較早發生</b>」的那一個。<br>" +
+    "By the time I arrived, the train <b>had left</b>.（火車<b>先</b>開走）<br>" +
+    "形式：<b>had + 過去分詞</b>。常配 by the time / when / before / after / already。" },
+  t_past_perfect_cont: { title: "過去完成進行式 Past Perfect Continuous", body:
+    "強調「某動作<b>一直進行到另一個過去時間</b>」。<br>" +
+    "We <b>had been queuing</b> for an hour before the counter opened.（排了一個小時，櫃台才開）<br>" +
+    "形式：<b>had been + V-ing</b>。" },
+  t_will: { title: "will + 原形（簡單未來式）", body:
+    "用在：<b>① 當下臨時決定</b>（I will help you.）<b>② 猜測／預測</b>（I'm sure it will snow.）<b>③ 承諾／拒絕</b><br>" +
+    "注意：副詞 <b>probably</b> 要放在 will 後面（will probably）。<br>形式：<b>will + 原形動詞</b>。" },
+  t_going_to: { title: "be going to", body:
+    "用在：<b>① 有「證據」的預測</b>（Look at the clouds! It is going to rain.）<br>" +
+    "<b>② 早就打算好的計劃</b>（I am going to eat more healthily.）<br>" +
+    "形式：<b>am / is / are + going to + 原形動詞</b>。" },
+  t_present_future: { title: "用現在式表示未來", body:
+    "<b>簡單現在式</b>：用在時刻表、正式安排（The train leaves at 6 a.m.）<br>" +
+    "<b>現在進行式</b>：用在<b>個人已安排好的未來計劃</b>（I am leaving at 5 p.m.）" },
+  t_future_continuous: { title: "未來進行式 Future Continuous", body:
+    "表示「未來某個時間點<b>正在進行</b>」的動作。<br>" +
+    "This time tomorrow, I <b>will be flying</b> to London.<br>形式：<b>will be + V-ing</b>。" },
+  t_future_perfect: { title: "未來完成式 Future Perfect", body:
+    "表示「到未來某時間點<b>已經完成</b>」的動作。<br>" +
+    "By next year, I <b>will have finished</b> the project.<br>形式：<b>will have + 過去分詞</b>。常配 <b>by + 時間</b>。" },
+  t_future_perfect_cont: { title: "未來完成進行式 Future Perfect Continuous", body:
+    "強調「到未來某時間點，動作<b>已經持續了多久</b>」。<br>" +
+    "By 2026, I <b>will have been working</b> here for ten years.<br>形式：<b>will have been + V-ing</b>。" },
+
+  /* ---- Prepositions ---- */
+  p_at_time: { title: "at + 時間點", body:
+    "<b>at</b> 用在「具體的時間點」：at 7:30、at noon（中午）、at midnight、at the moment（此刻）、at present（目前）。<br>" +
+    "也用在固定搭配：<b>at once</b>（立刻）、<b>at least</b>（至少）。" },
+  p_in_time: { title: "in + 較長的時間段", body:
+    "<b>in</b> 用在「一段時間、時段」：in the morning / afternoon / evening、in May、in 2020、in a moment（一會兒）、in the end（最後）。<br>" +
+    "也用在 <b>in future</b>（將來）。" },
+  p_on_time: { title: "on + 特定日子／日期", body:
+    "<b>on</b> 用在「某一天、特定日期或晚上」：on Monday、on May 5、on the night of…<br>" +
+    "也用在固定搭配：<b>on time</b>（準時）、<b>on end</b>（連續地）。" },
+  p_at_place: { title: "at + 地點（點／目的地）", body:
+    "<b>at</b> 用在「較小的地點、具體位置、目的地」：arrive at（到達）、look at（看）、at school、at the sight of（一看到）。" },
+  p_in_place: { title: "in + 空間／地區／城市", body:
+    "<b>in</b> 用在「較大的範圍、場所內部、城市、國家、區域」：in the supermarket、in New York、in the New Territories、in a building。" },
+  p_on_place: { title: "on + 表面／樓層／交通工具", body:
+    "<b>on</b> 用在「表面、樓層、交通工具上」：on the top floor（頂樓）、on board（在船上／機上）、on the bus（在巴士上）。<br>" +
+    "也用在 <b>on a diet</b>（節食）。" },
+  p_phrase: { title: "固定搭配（介詞片語）", body:
+    "有些介詞是「<b>固定搭配</b>」，要整組記住：at once（立刻）、on time（準時）、at least（至少）、in a hurry（匆忙）、in surprise（吃驚）、in my opinion（依我看）、on average（平均）、in order to（為了）、in the examination（在考試中）。" },
+  p_to: { title: "to 的用法", body:
+    "<b>to</b> 表示：<b>① 方向／目的地</b>（go to、the way to、lead to、point to）<br>" +
+    "<b>② 結果／程度</b>（moved to tears 感動落淚、to pieces 成碎片、to sleep 入睡）<br>" +
+    "<b>③ 搭配動詞</b>（object to 反對、reply to 回覆、belong to 屬於、faithful to 忠於、answer to）。" },
+  p_for: { title: "for 的用法", body:
+    "<b>for</b> 表示：<b>① 目的／用途</b>（fight for、take medicine for、for treatment、for pleasure、for fun）<br>" +
+    "<b>② 給某人</b>（a card for his mother、presents for the children）<br>" +
+    "<b>③ 持續時間</b>（for two weeks、for ten years）<b>④ 價格</b>（bought for ten dollars）<b>⑤</b> for nothing（免費）。" },
+  p_from: { title: "from 的用法", body:
+    "<b>from</b> 表示：<b>① 來源／起點</b>（made from、take money from、borrow from）<br>" +
+    "<b>② 分開／距離</b>（far from、away from、separated from、hide from）<br>" +
+    "<b>③ 防止</b>（protect from）<b>④ 從一個到另一個</b>（from … to …）。" },
+  p_against: { title: "against 的用法", body:
+    "<b>against</b> 表示：<b>① 靠著</b>（lean against）<b>② 反對／違反</b>（against the law、against her will）<br>" +
+    "<b>③ 逆著</b>（against the current 逆流）<b>④ 對…不利</b>（her age is against her）。" },
+  p_by: { title: "by 的用法", body:
+    "<b>by</b> 表示：<b>① 在…之前／到…為止</b>（by noon、by tomorrow、by then、by the time）<br>" +
+    "<b>② 方式</b>（by air 搭飛機、by the dozen 按打計）<b>③ 相差</b>（miss by a few centimetres）<br>" +
+    "<b>④ 乘以</b>（three by six）<b>⑤</b> day by day（一天一天地）。" },
+  p_of: { title: "of 的用法", body:
+    "<b>of</b> 表示：<b>① 所有／屬於</b>（the back of a taxi、part of）<br>" +
+    "<b>② 搭配動詞</b>（get rid of 擺脫、accuse of 控告、rob sb of sth 搶走、smell of 有…味）<br>" +
+    "<b>③</b> conscious of（意識到）、<b>of course</b>（當然）。注意：awake 要用 <b>to</b>（awake to）。" },
+};
+
+/* ===================== 題目資料 ===================== */
+const SUBJECTS = [
   {
-    title: "Exercise 1", choices: ["at", "in", "on"],
-    raw: [
-      "Come [in|進來] and close the door [at|立刻（at once）] once.",
-      "Hold [on|稍等（hold on）] please and Mr Lee will be with you [in|在一段時間後（in a moment）] a moment.",
-      "The show ended [at|在幾點鐘] five minutes past one [in|在下午] the afternoon.",
-      "I met him [in|在場所內] the supermarket [on|在某個場合（on several occasions）] several occasions.",
-      "[In|在那段日子] those days, we lived [in|住在某個地方] a very small hotel.",
-      "[In|最後（in the end）] the end, [at|至少（at least）] least twenty students agreed to help us.",
-      "His office is located [in|在建築物內] a commercial building, [on|在某一層樓] the top floor.",
-      "Although he got up [at|在幾點] half past seven, he got to school [on|準時（on time）] time.",
-      "Everyone [on|在船/車上（on board）] board the ship jumped for joy [at|看到某景象時（at the sight of）] the sight of land.",
-      "We shall arrive [at|到達某地] our destination [in|在某個地區] the New Territories soon.",
-      "You must hand [in|交上（hand in）] your classwork [at|在…結束時] the end of the lesson.",
-      "[On|一…就…（On + -ing）] answering the call, he left the house [in|匆忙地（in a hurry）] a hurry.",
-      "[On|在特定的晚上] the night of May 5, the travellers arrived [in|到達城市/國家] New York.",
-      "We got [on|上車（on the bus）] the bus [at|在中午] noon.",
-      "He is not [in|在家／在裡面] [at|在此刻（at this moment）] this moment; he is out [at|此刻（at the moment）] the moment.",
-      "He looked [at|看著某人/物] the woman [in|吃驚地（in surprise）] surprise.",
-      "[On|平均來說（on average）] average two thirds of the students failed [in|在考試中] the examination.",
-      "[In|依我看（in my opinion）] my opinion, you are too fat. You need to go [on|節食（on a diet）] a diet.",
-      "It has been raining for several days [on|連續地（on end）] end. It is still raining [at|目前（at present）] present.",
-      "He put [on|戴上（眼鏡）] his glasses [in|為了（in order to）] order to read the small prints [in|在報紙上] the newspaper."
+    key: "prepositions", label: "介詞 Prepositions",
+    sub: "at / in / on · to / for / from · against · by / of",
+    exercises: [
+      {
+        title: "Exercise 1", tag: "at / in / on", type: "choice",
+        choices: ["at", "in", "on"],
+        items: [
+          "Come [in|come in 是固定搭配，解「進來」，in 表示進入|p_in_place] and close the door [at|at once 是固定搭配，解「立刻」|p_at_time] once.",
+          "Hold [on|hold on 是固定搭配，解「稍等」|p_phrase] please and Mr Lee will be with you [in|in a moment 解「一會兒」，指一段時間後|p_in_time] a moment.",
+          "The show ended [at|at + 具體時間點（五時五分）|p_at_time] five minutes past one [in|in the afternoon 用 in + 時段|p_in_time] the afternoon.",
+          "I met him [in|in + 場所（超市內）|p_in_place] the supermarket [on|on several occasions 解「在多次場合」|p_on_place] several occasions.",
+          "[In|In those days 解「在那段日子」，in + 一段時間|p_in_time] those days, we lived [in|in + 地點（旅館）|p_in_place] a very small hotel.",
+          "[In|in the end 是固定搭配，解「最後」|p_phrase] the end, [at|at least 是固定搭配，解「至少」|p_at_time] least twenty students agreed to help us.",
+          "His office is located [in|in + 建築物（在裡面）|p_in_place] a commercial building, [on|on + 樓層（on the top floor）|p_on_place] the top floor.",
+          "Although he got up [at|at + 時間點（七點半）|p_at_time] half past seven, he got to school [on|on time 是固定搭配，解「準時」|p_phrase] time.",
+          "Everyone [on|on board 是固定搭配，解「在船上」|p_on_place] board the ship jumped for joy [at|at the sight of 解「一看到」|p_at_place] the sight of land.",
+          "We shall arrive [at|arrive at + 目的地（較小地點）|p_at_place] our destination [in|in + 區域（新界）|p_in_place] the New Territories soon.",
+          "You must hand [in|hand in 是固定搭配，解「交上」|p_phrase] your classwork [at|at the end of 解「在…結束時」|p_at_time] the end of the lesson.",
+          "[On|On + 動名詞 = 一…就…|p_on_time] answering the call, he left the house [in|in a hurry 是固定搭配，解「匆忙」|p_phrase] a hurry.",
+          "[On|on + 特定晚上（on the night of）|p_on_time] the night of May 5, the travellers arrived [in|arrive in + 城市／國家（紐約）|p_in_place] New York.",
+          "We got [on|on + 交通工具（上巴士）|p_on_place] the bus [at|at + 時間點（中午）|p_at_time] noon.",
+          "He is not [in|in 表示「在家／在裡面」|p_in_place] [at|at this moment 解「此刻」|p_at_time] this moment; he is out [at|at the moment 解「此刻」|p_at_time] the moment.",
+          "He looked [at|look at 解「看」，at + 對象|p_at_place] the woman [in|in surprise 是固定搭配，解「吃驚地」|p_phrase] surprise.",
+          "[On|on average 是固定搭配，解「平均」|p_phrase] average two thirds of the students failed [in|in the examination 解「在考試中」|p_phrase] the examination.",
+          "[In|in my opinion 是固定搭配，解「依我看」|p_phrase] my opinion, you are too fat. You need to go [on|on a diet 是固定搭配，解「節食」|p_phrase] a diet.",
+          "It has been raining for several days [on|on end 是固定搭配，解「連續地」|p_phrase] end. It is still raining [at|at present 是固定搭配，解「目前」|p_at_time] present.",
+          "He put [on|put on 是固定搭配，解「戴上」|p_phrase] his glasses [in|in order to 是固定搭配，解「為了」|p_phrase] order to read the small prints [in|in + 媒介（報紙上）|p_in_place] the newspaper."
+        ]
+      },
+      {
+        title: "Exercise 2", tag: "to / for / from", type: "choice",
+        choices: ["to", "for", "from"],
+        items: [
+          "The prisoner was released [from|release from 解「從…釋放」，from + 來源|p_from] prison yesterday.",
+          "[To|to my surprise 是固定搭配，解「令我驚訝」|p_to] my surprise, no one failed in the short quiz.",
+          "Manchester is [to|to the north of 表示方位「在…的北方」|p_to] the north of London.",
+          "Wine is made [from|made from + 原料（看不出原貌）|p_from] grapes.",
+          "He has been taken [to|take to 解「帶去某地」，to + 目的地|p_to] hospital [for|for + 目的（治療）|p_for] treatment.",
+          "He made a birthday card [for|for + 對象（給媽媽）|p_for] his mother.",
+          "I am now on the way [to|on the way to 解「前往」，to + 目的地|p_to] the airport.",
+          "Are you willing to fight [for|fight for 解「為…而戰」，for + 目的|p_for] your country?",
+          "Do you know that steel is made [from|made from + 原料|p_from] iron?",
+          "The needle points [to|point to 解「指向」，to + 方向|p_to] the north.",
+          "He took some money [from|take from 解「從…拿出」，from + 來源|p_from] his wallet.",
+          "I bought this old stamp [for|for + 價錢（十元）|p_for] a mere ten dollars.",
+          "Walk straight and turn [to|turn to + 方向（向左轉）|p_to] left when you reach the traffic lights.",
+          "The poor boy has been separated [from|separated from 解「與…分開」|p_from] his mother [for|for + 持續時間（幾年）|p_for] a few years.",
+          "You may take this medicine [for|for + 用途（治頭痛）|p_for] your headache.",
+          "I would like to borrow a tool [from|borrow from 解「向…借」，from + 來源|p_from] you.",
+          "He often changes [from|from … to … 從一個到另一個|p_from] one job [to|from … to …|p_to] another.",
+          "He has been sick [for|for + 持續時間（兩週）|p_for] over two weeks.",
+          "We need to protect children [from|protect from 解「保護免受…」|p_from] violence.",
+          "He often laughs at his friends [for|for fun 解「為了好玩」，for + 目的|p_for] fun."
+        ]
+      },
+      {
+        title: "Exercise 3", tag: "to / for / from / against", type: "choice",
+        choices: ["to", "for", "from", "against"],
+        items: [
+          "Move [to|move to + 方向（向左）|p_to] the left and turn round.",
+          "She bought many presents [for|for + 對象（給孩子）|p_for] the children.",
+          "Don't lean [against|lean against 解「靠在…上」|p_against] the wall; it is not safe.",
+          "He has been absent [from|absent from 解「缺席」，from + 地點|p_from] school [for|for + 持續時間（兩週）|p_for] two weeks.",
+          "The film was so touching that the audience was moved [to|moved to tears 解「感動落淚」，to + 結果|p_to] tears.",
+          "This youth centre provides many different facilities [for|for + 對象（會員）|p_for] its members.",
+          "He is rowing a boat [against|against the current 解「逆流」|p_against] the current.",
+          "He tore the photograph [to|to pieces 解「成碎片」，to + 結果|p_to] pieces.",
+          "He is learning French [for|for + 目的（工作）|p_for] his work.",
+          "[From|from now on 是固定搭配，解「從現在起」|p_from] now on, you will be the owner of this house.",
+          "He is a criminal and is acting [against|against the law 解「違法」|p_against] the law.",
+          "We will go [to|go to + 目的地|p_to] Hawaii [for|for pleasure 解「為了玩樂」，for + 目的|p_for] pleasure.",
+          "The vase fell [to|fall to the ground 解「掉到地上」，to + 結果|p_to] the ground and broke.",
+          "What are you trying to hide [from|hide from 解「瞞著某人」|p_from] me?",
+          "The tourists will stay at this hotel [for|for + 持續時間（兩週）|p_for] two weeks.",
+          "Mrs Wong sang her baby [to|sing to sleep 解「唱到入睡」，to + 結果|p_to] sleep.",
+          "The woods extend [to|extend to 解「延伸到」，to + 範圍|p_to] the river bank.",
+          "The young woman married the old man [against|against her will 解「違背意願」|p_against] her will.",
+          "Her application is unsuccessful because her age is [against|against 解「對…不利」|p_against] her.",
+          "That little boy mistook a strange woman [for|mistake A for B 解「誤以為」|p_for] …"
+        ]
+      },
+      {
+        title: "Exercise 4", tag: "by / to / for / from", type: "choice",
+        choices: ["by", "to", "for", "from"],
+        items: [
+          "We must finish all our work [by|by + 時間 = 在…之前|p_by] noon tomorrow.",
+          "[From|from what I know 解「據我所知」，from + 來源|p_from] what I know, we will have a new teacher next month.",
+          "He gave me his old piano [for|for nothing 解「免費」|p_for] nothing.",
+          "We must object [to|object to 解「反對」，to + 對象|p_to] this plan because it costs too much.",
+          "[By|by the time 解「到…時」|p_by] the time we reached home, the house had burnt [to|to ashes 解「成灰燼」，to + 結果|p_to] ashes.",
+          "The old woman has to work [from|from hand to mouth 是固定搭配，解「僅能糊口」|p_from] hand [to|from … to …|p_to] mouth.",
+          "The fireman got a medal [for|for + 原因（勇敢）|p_for] his bravery.",
+          "All the windows were broken [to|to pieces 解「成碎片」|p_to] pieces in the explosion.",
+          "Jimmy often stays away [from|away from 解「遠離」|p_from] school because of illness.",
+          "He had employed more than twenty workers [by|by then 解「到那時為止」|p_by] then.",
+          "Close your eyes and count [to|count to 解「數到」，to + 程度|p_to] ten.",
+          "Things have gone [from|from bad to worse 解「每況愈下」|p_from] bad [to|from … to …|p_to] worse.",
+          "I will stand [by|stand by 解「支持」|p_by] you if you need me.",
+          "The criminal was sent [to|sent to prison 解「送去監獄」|p_to] prison [for|for + 持續時間（十年）|p_for] ten years.",
+          "[To|To whom does … belong 解「屬於誰」|p_to] whom does this bicycle belong?",
+          "We shall complete our work [by|by + 時間 = 在…之前|p_by] tomorrow.",
+          "The dog is quite faithful [to|faithful to 解「忠於」|p_to] its master.",
+          "Please don't translate this letter word [for|word for word 解「逐字」|p_for] word.",
+          "He is going [to|go to + 目的地|p_to] Shanghai [by|by air 解「搭飛機」|p_by] air tomorrow.",
+          "I am far [from|far from 解「完全不」|p_from] agreeing with him."
+        ]
+      },
+      {
+        title: "Exercise 5", tag: "by / in / of / to", type: "choice",
+        choices: ["by", "in", "of", "to"],
+        items: [
+          "I think you must get rid [of|get rid of 解「擺脫」|p_of] your bad habits.",
+          "Air pollution has given rise [to|give rise to 解「導致」|p_to] many cases of lung diseases.",
+          "He realized that he needed to act more carefully [in|in future 解「將來」|p_in_time] future.",
+          "The police have decided to accuse him [of|accuse of 解「控告」|p_of] robbery.",
+          "This road leads [to|lead to 解「通往」|p_to] the new stadium.",
+          "Eggs are sold [by|by the dozen 解「按打計」|p_by] the dozen.",
+          "We will spend part [of|part of 解「…的一部分」|p_of] our holiday [in|in + 國家／地方（加拿大）|p_in_place] Canada.",
+          "I wonder if you can give me the answer [to|the answer to 解「…的答案」|p_to] this question.",
+          "His health is improving day [by|day by day 解「一天一天地」|p_by] day.",
+          "He could not stop his car [in|in time 解「及時」|p_in_time] time. It crashed into the back [of|the back of 解「…的後方」|p_of] a taxi.",
+          "You need to reply [to|reply to 解「回覆」|p_to] this letter as soon as possible.",
+          "[Of|of course 解「當然」|p_of] course I will help you if I can.",
+          "Three [by|by 解「乘以」|p_by] six equals eighteen.",
+          "[In|in regard to 解「關於」|p_in_time] regard [to|in regard to|p_to] your criticism, I wish to express my views.",
+          "Many people are not conscious [of|conscious of 解「意識到」|p_of] the dangers around them.",
+          "These two digital cameras differ greatly [in|differ in 解「在…方面不同」|p_in_place] prices.",
+          "Two teenagers robbed him [of|rob sb of sth 解「搶走」|p_of] all his money this morning.",
+          "Your jacket smells [of|smell of 解「有…味」|p_of] cigarette smoke.",
+          "He is not awake [to|awake to 解「意識到」（注意用 to 不用 of）|p_to] his opportunities.",
+          "The bullet missed the target [by|by + 差距（差幾公分）|p_by] a few centimetres."
+        ]
+      }
     ]
   },
   {
-    title: "Exercise 2", choices: ["to", "for", "from"],
-    raw: [
-      "The prisoner was released [from|從（監獄）釋放] prison yesterday.",
-      "[To|令我驚訝的是（to my surprise）] my surprise, no one failed in the short quiz.",
-      "Manchester is [to|位於…的北方] the north of London.",
-      "Wine is made [from|由…製成（看不出原料）] grapes.",
-      "He has been taken [to|被帶到某地] hospital [for|為了（治療）] treatment.",
-      "He made a birthday card [for|為某人] his mother.",
-      "I am now on the way [to|前往某地] the airport.",
-      "Are you willing to fight [for|為…而戰] your country?",
-      "Do you know that steel is made [from|由…製成（看不出原料）] iron?",
-      "The needle points [to|指向某方向] the north.",
-      "He took some money [from|從（錢包）拿出] his wallet.",
-      "I bought this old stamp [for|以多少錢] a mere ten dollars.",
-      "Walk straight and turn [to|轉向某方向] left when you reach the traffic lights.",
-      "The poor boy has been separated [from|與某人分開] his mother [for|持續一段時間] a few years.",
-      "You may take this medicine [for|治療（病症）] your headache.",
-      "I would like to borrow a tool [from|向某人借] you.",
-      "He often changes [from|從一個…] one job [to|到另一個…] another.",
-      "He has been sick [for|持續一段時間] over two weeks.",
-      "We need to protect children [from|免受（傷害）] violence.",
-      "He often laughs at his friends [for|為了（好玩）] fun."
-    ]
-  },
-  {
-    title: "Exercise 3", choices: ["to", "for", "from", "against"],
-    raw: [
-      "Move [to|往（左邊）] the left and turn round.",
-      "She bought many presents [for|給某人] the children.",
-      "Don't lean [against|靠在…上] the wall; it is not safe.",
-      "He has been absent [from|缺席某處] school [for|持續兩週] two weeks.",
-      "The film was so touching that the audience was moved [to|感動到（流淚）] tears.",
-      "This youth centre provides many different facilities [for|為某人提供] its members.",
-      "He is rowing a boat [against|逆著（水流）] the current.",
-      "He tore the photograph [to|撕成（碎片）] pieces.",
-      "He is learning French [for|為了（工作）] his work.",
-      "[From|從現在起（from now on）] now on, you will be the owner of this house.",
-      "He is a criminal and is acting [against|違反（法律）] the law.",
-      "We will go [to|去某地] Hawaii [for|為了（娛樂）] pleasure.",
-      "The vase fell [to|掉到（地上）] the ground and broke.",
-      "What are you trying to hide [from|瞞著某人] me?",
-      "The tourists will stay at this hotel [for|持續兩週] two weeks.",
-      "Mrs Wong sang her baby [to|唱到（入睡）] sleep.",
-      "The woods extend [to|延伸到（河岸）] the river bank.",
-      "The young woman married the old man [against|違背（意願）] her will.",
-      "Her application is unsuccessful because her age is [against|對…不利] her.",
-      "That little boy mistook a strange woman [for|誤以為是（mistake A for B）] …"
-    ]
-  },
-  {
-    title: "Exercise 4", choices: ["by", "to", "for", "from"],
-    raw: [
-      "We must finish all our work [by|在…之前（by noon）] noon tomorrow.",
-      "[From|根據（我所知）] what I know, we will have a new teacher next month.",
-      "He gave me his old piano [for|免費（for nothing）] nothing.",
-      "We must object [to|反對（object to）] this plan because it costs too much.",
-      "[By|到…時（By the time）] the time we reached home, the house had burnt [to|燒成（灰燼）] ashes.",
-      "The old woman has to work [from|從…到…（from hand to mouth 僅能糊口）] hand [to|（同上）] mouth.",
-      "The fireman got a medal [for|因為（勇敢）] his bravery.",
-      "All the windows were broken [to|破成（碎片）] pieces in the explosion.",
-      "Jimmy often stays away [from|遠離（學校）] school because of illness.",
-      "He had employed more than twenty workers [by|到那時為止（by then）] then.",
-      "Close your eyes and count [to|數到（十）] ten.",
-      "Things have gone [from|從（壞）…] bad [to|到（更糟）…] worse.",
-      "I will stand [by|支持某人] you if you need me.",
-      "The criminal was sent [to|送到（監獄）] prison [for|關（十年）] ten years.",
-      "[To|屬於誰（To whom … belong）] whom does this bicycle belong?",
-      "We shall complete our work [by|在…之前] tomorrow.",
-      "The dog is quite faithful [to|忠於（主人）] its master.",
-      "Please don't translate this letter word [for|逐字地（word for word）] word.",
-      "He is going [to|去（上海）] Shanghai [by|搭（飛機）] air tomorrow.",
-      "I am far [from|完全不（同意）] agreeing with him."
-    ]
-  },
-  {
-    title: "Exercise 5", choices: ["by", "in", "of", "to"],
-    raw: [
-      "I think you must get rid [of|擺脫（壞習慣）] your bad habits.",
-      "Air pollution has given rise [to|導致（give rise to）] many cases of lung diseases.",
-      "He realized that he needed to act more carefully [in|將來（in future）] future.",
-      "The police have decided to accuse him [of|控告某人某事] robbery.",
-      "This road leads [to|通往（體育館）] the new stadium.",
-      "Eggs are sold [by|按…計算（by the dozen 按打計）] the dozen.",
-      "We will spend part [of|…的一部分] our holiday [in|在（加拿大）] Canada.",
-      "I wonder if you can give me the answer [to|…的答案（the answer to）] this question.",
-      "His health is improving day [by|一天一天地] day.",
-      "He could not stop his car [in|及時（in time）] time. It crashed into the back [of|（計程車）的後方] a taxi.",
-      "You need to reply [to|回覆（信件）] this letter as soon as possible.",
-      "[Of|當然（Of course）] course I will help you if I can.",
-      "Three [by|乘以] six equals eighteen.",
-      "[In|關於（in regard to）] regard [to|（同上）] your criticism, I wish to express my views.",
-      "Many people are not conscious [of|意識到（危險）] the dangers around them.",
-      "These two digital cameras differ greatly [in|在（價格）方面] prices.",
-      "Two teenagers robbed him [of|搶走某人的東西（rob sb of sth）] all his money this morning.",
-      "Your jacket smells [of|有…的氣味（smell of）] cigarette smoke.",
-      "He is not awake [to|意識到（機會）] his opportunities.",
-      "The bullet missed the target [by|差了（幾公分）] a few centimetres."
+    key: "tenses", label: "時態 Tenses",
+    sub: "Present · Past · Future（混合）",
+    exercises: [
+      {
+        title: "Exercise 1", tag: "Fill in the blanks（混合時態）", type: "input",
+        items: [
+          "I [haven't seen/have not seen|since + 過去到現在沒見→現在完成式（否定）|t_present_perfect] my cousin since we [finished|since 後的子句用簡單過去式|t_simple_past] primary school.",
+          "While the chef [was cooking|while 後的長動作→過去進行式|t_past_continuous], a customer [fainted|短動作突然發生→簡單過去式|t_simple_past] suddenly.",
+          "I'm sure it [will snow|I'm sure 表猜測→will + 原形|t_will] tonight.",
+          "By the time the firemen [arrived|較後發生的動作→簡單過去式|t_simple_past], the fire [had already destroyed|較早發生→過去完成式|t_past_perfect] the whole building.",
+          "Hurry up! The bus [is coming|正在來→現在進行式|t_present_continuous]. We [will be/are going to be|預測將遲到→will ／ be going to|t_will] late for school.",
+          "She [promised|yesterday→簡單過去式|t_simple_past] to help me yesterday, but she [hasn't called/has not called|yet→現在完成式|t_present_perfect] me yet.",
+          "The shop [opens|時刻表／固定時間→簡單現在式|t_simple_present] at ten, so we still have time.",
+          "I [have been working|動作持續到現在仍未結束→現在完成進行式|t_present_perfect_cont] on this project for two weeks and I [haven't finished/have not finished|尚未完成→現在完成式|t_present_perfect] it yet.",
+          "When I [was|過去→簡單過去式|t_simple_past] young, I usually [spent|過去習慣→簡單過去式|t_simple_past] my holidays in the countryside.",
+          "By the end of this year, my father [will have been working|到未來某點已持續多久→未來完成進行式|t_future_perfect_cont] at the bank for twenty years."
+        ]
+      },
+      {
+        title: "Exercise 2", tag: "Fill in the blanks（混合時態）", type: "input",
+        items: [
+          "Don't switch off the TV. I [am still watching|現在正在進行→現在進行式|t_present_continuous] the news.",
+          "She [has lost|過去動作影響現在→現在完成式|t_present_perfect] her keys, so she [cannot|現在的能力／狀態|t_simple_present] get into her flat now.",
+          "Last night, while we [were having|while + 長動作→過去進行式|t_past_continuous] dinner, the lights [went|短動作→簡單過去式|t_simple_past] out.",
+          "We [had been queuing|過去某點之前持續進行→過去完成進行式|t_past_perfect_cont] for tickets for an hour before the counter [opened|較後動作→簡單過去式|t_simple_past].",
+          "The students [had already left|較早發生→過去完成式|t_past_perfect] the hall when the headmaster [arrived|較後動作→簡單過去式|t_simple_past].",
+          "I [met|last week→簡單過去式|t_simple_past] John last week. He [had just returned|在 met 之前已發生→過去完成式|t_past_perfect] from Australia.",
+          "She [is taking|now→現在進行式|t_present_continuous] a rest now because she [has been feeling|all day 持續→現在完成進行式|t_present_perfect_cont] tired all day.",
+          "Have you ever [visited|ever（經驗）→現在完成式，have/has + 過去分詞|t_present_perfect] the Space Museum?",
+          "They [are building|正在興建→現在進行式|t_present_continuous] a new library near our school; they [will have finished|by next year→未來完成式|t_future_perfect] it by next year.",
+          "This time next week, I [will be sunbathing|未來某時間點正在進行→未來進行式|t_future_continuous] on a beach in Thailand."
+        ]
+      },
+      {
+        title: "Exercise 3", tag: "Fill in the blanks（混合時態）", type: "input",
+        items: [
+          "The phone [rang|短動作→簡單過去式|t_simple_past] while he [was driving|while + 長動作→過去進行式|t_past_continuous], but he [didn't answer/did not answer|簡單過去式否定|t_simple_past] it.",
+          "By the time you [come|by the time 後的子句→簡單現在式表未來|t_present_future] home, I [will have cooked|到那時已完成→未來完成式|t_future_perfect] dinner.",
+          "I [have read|already + 次數→現在完成式|t_present_perfect] that novel twice already. It's brilliant.",
+          "She [hasn't been/has not been|for ages→現在完成式|t_present_perfect] to the cinema for ages because she [has been|現在仍忙碌→現在完成式|t_present_perfect] too busy.",
+          "When the alarm [rang|短動作→簡單過去式|t_simple_past], everyone [ran|接著發生的動作→簡單過去式|t_simple_past] out of the building.",
+          "He [has lived/has been living|since 2018→現在完成式／完成進行式|t_present_perfect] in this flat since 2018.",
+          "We [have been waiting|for two hours 持續到現在→現在完成進行式|t_present_perfect_cont] for the doctor for two hours and we [are still waiting|still + now→現在進行式|t_present_continuous].",
+          "I [had never seen|before 之前的經驗→過去完成式|t_past_perfect] such a beautiful sunset before I [visited|較後動作→簡單過去式|t_simple_past] the island.",
+          "Don't worry about the tickets. I [will book|當下臨時決定→will|t_will] them online.",
+          "She [was studying|我上一次看到她時正在做→過去進行式|t_past_continuous] in the library when I last [saw|last→簡單過去式|t_simple_past] her."
+        ]
+      },
+      {
+        title: "Exercise 4", tag: "Sentence rewrite（改寫句子）", type: "input",
+        instr: "用括號內的字改寫句子，把第二句完成，意思不變。",
+        items: [
+          "I [haven't seen/have not seen|last saw＝最後一次見→改寫成現在完成式 since／for|t_present_perfect] my friend for two years.",
+          "When I arrived, the film [had already begun/had already started|電影在我到達前已開始→過去完成式|t_past_perfect].",
+          "She [has been|五年前開始、至今持續→現在完成進行式 has been learning|t_present_perfect_cont] learning French for five years.",
+          "I [have never been|first visit＝第一次去→從未去過→現在完成式|t_present_perfect] to Japan before.",
+          "At nine, he [has been reading|從八點讀到九點還在讀→現在完成進行式|t_present_perfect_cont] for an hour.",
+          "The baby [has been|since noon 持續到現在→現在完成進行式 has been crying|t_present_perfect_cont] crying since noon.",
+          "We [are having|已安排好→現在進行式表未來|t_present_future] a party next Friday.",
+          "The typhoon [will probably|probably 要放在 will 後面→will probably|t_will] come this weekend."
+        ]
+      },
+      {
+        title: "Exercise 5", tag: "Sentence rewrite（改寫句子）", type: "input",
+        instr: "用括號內的字改寫句子，完成空格，意思不變。",
+        items: [
+          "The lights went out [while|while 連接兩個過去動作|t_past_continuous] I [was having|長動作→過去進行式|t_past_continuous] dinner.",
+          "She [had never seen|較早的經驗→過去完成式|t_past_perfect] snow [until|until＝直到|t_past_perfect] she visited Japan.",
+          "When he [had spoken|先講完話→過去完成式|t_past_perfect], he sat down.",
+          "I [am going to|早就決定→be going to|t_going_to] join the school choir.",
+          "We [will have finished|by next week→未來完成式|t_future_perfect] the project by next week.",
+          "Look at the dark clouds! It [is going to|有證據的預測→be going to|t_going_to] rain soon.",
+          "I [have worked|since 2020→現在完成式|t_present_perfect] here [since|since + 時間起點|t_present_perfect] 2020.",
+          "I [have never tried|first time＝第一次→從未試過→現在完成式|t_present_perfect] scuba diving before."
+        ]
+      },
+      {
+        title: "Exercise 6", tag: "Multiple choice（12 題）", type: "mc",
+        items: [
+          { q: "I ______ my homework when you called me last night.", opts: ["do","was doing","have done","had done"], ans: 1, zh: "昨晚你打來時我正在做功課→過去某時刻進行中→過去進行式 was/were + V-ing", recap: "t_past_continuous" },
+          { q: "By the time we reached the cinema, the film ______.", opts: ["started","has started","had started","was starting"], ans: 2, zh: "電影在我們到達前已開始→兩個過去動作中較早的用過去完成式", recap: "t_past_perfect" },
+          { q: "She ______ in this company since 2019.", opts: ["works","worked","has worked","is working"], ans: 2, zh: "since 2019 從過去持續到現在→現在完成式", recap: "t_present_perfect" },
+          { q: "Look! It ______. Take an umbrella.", opts: ["rains","is raining","has rained","rained"], ans: 1, zh: "Look! 表示正在發生→現在進行式", recap: "t_present_continuous" },
+          { q: "We ______ a party next Saturday. Would you like to come?", opts: ["have","had","are having","will having"], ans: 2, zh: "已安排好的未來計劃→現在進行式表未來", recap: "t_present_future" },
+          { q: "I ______ three cups of coffee so far today.", opts: ["drink","drank","am drinking","have drunk"], ans: 3, zh: "so far（目前為止）→現在完成式", recap: "t_present_perfect" },
+          { q: "While Mum ______ in the kitchen, I ______ my room.", opts: ["cooked, cleaned","was cooking, cleaned","cooked, was cleaning","was cooking, was cleaning"], ans: 3, zh: "兩個過去同時進行的動作→都用過去進行式", recap: "t_past_continuous" },
+          { q: "The students ______ the hall before the headmaster arrived.", opts: ["left","have left","had left","were leaving"], ans: 2, zh: "學生在校長到達前已離開→過去完成式", recap: "t_past_perfect" },
+          { q: "This time tomorrow, I ______ on a plane to London.", opts: ["sit","will sit","will be sitting","am sitting"], ans: 2, zh: "未來某時間點正在進行→未來進行式 will be + V-ing", recap: "t_future_continuous" },
+          { q: "He ______ his keys, so he can't open the door now.", opts: ["loses","lost","has lost","had lost"], ans: 2, zh: "過去動作影響現在（開不了門）→現在完成式", recap: "t_present_perfect" },
+          { q: "I'm sure our team ______ the match tomorrow.", opts: ["wins","will win","is winning","has won"], ans: 1, zh: "I'm sure 表猜測→will + 原形", recap: "t_will" },
+          { q: "She ______ the piano every day when she was young.", opts: ["plays","played","was playing","has played"], ans: 1, zh: "過去習慣動作→簡單過去式", recap: "t_simple_past" }
+        ]
+      },
+      {
+        title: "Exercise 7", tag: "Multiple choice（12 題）", type: "mc",
+        items: [
+          { q: "How long ______ you ______ here?", opts: ["did, live","have, lived","do, live","are, living"], ans: 1, zh: "How long + 持續到現在→現在完成式", recap: "t_present_perfect" },
+          { q: "The baby ______ all morning. He must be tired.", opts: ["cries","cried","has been crying","is crying"], ans: 2, zh: "all morning 持續到現在→現在完成進行式", recap: "t_present_perfect_cont" },
+          { q: "Don't disturb me. I ______ an important letter.", opts: ["write","wrote","am writing","have written"], ans: 2, zh: "正在做→現在進行式", recap: "t_present_continuous" },
+          { q: "When I ______ young, I ______ to school by bus.", opts: ["was, went","am, go","was, was going","have been, went"], ans: 0, zh: "過去的狀態與習慣→簡單過去式", recap: "t_simple_past" },
+          { q: "She ______ a shower when the earthquake happened.", opts: ["takes","took","was taking","has taken"], ans: 2, zh: "地震發生時正在沖涼→過去進行式", recap: "t_past_continuous" },
+          { q: "We ______ our new house by the end of this month.", opts: ["move into","will move into","will have moved into","are moving into"], ans: 2, zh: "by the end of this month 之前完成→未來完成式", recap: "t_future_perfect" },
+          { q: "I ______ never ______ such a funny film before.", opts: ["have, seen","had, seen","did, see","was, seeing"], ans: 0, zh: "never + before 經驗→現在完成式", recap: "t_present_perfect" },
+          { q: "The train ______ at 7:30 every morning.", opts: ["leave","leaves","is leaving","left"], ans: 1, zh: "固定時間表→簡單現在式（主語第三人稱加 -s）", recap: "t_simple_present" },
+          { q: "He ______ for ten years before he retired.", opts: ["taught","has taught","had taught","was teaching"], ans: 2, zh: "退休前已教十年→過去完成式", recap: "t_past_perfect" },
+          { q: "______ you ______ the new library yet?", opts: ["Have, visited","Did, visit","Do, visit","Are, visiting"], ans: 0, zh: "yet→現在完成式疑問句", recap: "t_present_perfect" },
+          { q: "It ______. The ground is wet.", opts: ["rained","was raining","has rained","had rained"], ans: 2, zh: "地面濕＝過去動作的現在結果→現在完成式", recap: "t_present_perfect" },
+          { q: "Look out! That car ______ hit you!", opts: ["will","is going to","is","was going to"], ans: 1, zh: "眼前立即的危險／證據→be going to", recap: "t_going_to" }
+        ]
+      },
+      {
+        title: "Exercise 8", tag: "Passage cloze（短文填充）", type: "input",
+        instr: "用括號內動詞的正確形式完成短文。",
+        items: [
+          "When I [was|過去→簡單過去式|t_simple_past] fourteen, my father [took|過去→簡單過去式|t_simple_past] me on my first camping trip in Sai Kung. We [had been planning|在出發前已計劃數週→過去完成進行式|t_past_perfect_cont] the trip for weeks, and I [had been looking forward|一直期待→過去完成進行式|t_past_perfect_cont] to it eagerly. On the day of departure, however, I [overslept|過去→簡單過去式|t_simple_past] because my alarm clock [had stopped|在睡過頭之前已壞→過去完成式|t_past_perfect] working during the night. By the time we [left|過去→簡單過去式|t_simple_past] the house, the sky [had already turned|在離開前已變灰→過去完成式|t_past_perfect] grey.",
+          "“Don't worry,” my father [said|過去→簡單過去式|t_simple_past]. “The weather [will improve|父親的預測→will|t_will] later.” I [didn't believe/did not believe|過去否定→簡單過去式|t_simple_past] him, but I [decided|過去→簡單過去式|t_simple_past] to stay positive. While we [were driving|while + 長動作→過去進行式|t_past_continuous] along the winding country road, heavy rain suddenly [poured|短動作突然發生→簡單過去式|t_simple_past] down. The visibility [became|過去→簡單過去式|t_simple_past] so poor that my father [had|過去→簡單過去式（have to 的過去式）|t_simple_past] to pull over. We [sat|過去→簡單過去式|t_simple_past] in the car for nearly two hours, listening to the thunder. I [had never felt|到那時為止從未→過去完成式|t_past_perfect] so disappointed in my life.",
+          "Eventually, the rain [eased|過去→簡單過去式|t_simple_past] and we [reached|過去→簡單過去式|t_simple_past] the campsite late in the evening, exhausted but relieved. Since that trip, I [have always packed|since that trip 之後至今→現在完成式|t_present_perfect] a spare alarm clock whenever I go camping."
+        ]
+      },
+      {
+        title: "Exercise 9", tag: "Passage cloze（短文填充）", type: "input",
+        instr: "用括號內動詞的正確形式完成短文。",
+        items: [
+          "This summer, I [decided|過去→簡單過去式|t_simple_past] to look for a part-time job instead of staying at home. For years, I [had relied|在決定找工作之前→過去完成式|t_past_perfect] on my parents for pocket money, and I [wanted|過去→簡單過去式|t_simple_past] to become more independent. After I [had sent|在咖啡店打來之前已寄→過去完成式|t_past_perfect] out more than ten applications, a small café finally [called|過去→簡單過去式|t_simple_past] me for an interview.",
+          "On the day of the interview, I [woke|過去→簡單過去式|t_simple_past] up extra early. I [had been practising|整個星期持續練習→過去完成進行式|t_past_perfect_cont] answering common interview questions all week, so I [felt|過去→簡單過去式|t_simple_past] fairly confident. However, when I [arrived|過去→簡單過去式|t_simple_past], the manager [had already interviewed|在我到達前已面試→過去完成式|t_past_perfect] two other candidates. I [waited|過去→簡單過去式|t_simple_past] nervously outside for what felt like forever. Just as I [was wondering|當時正在想→過去進行式|t_past_continuous] whether I should give up, the door [opened|短動作→簡單過去式|t_simple_past] and the manager [called|短動作→簡單過去式|t_simple_past] my name.",
+          "“Relax,” she [smiled|過去→簡單過去式|t_simple_past]. “We [have decided|already + 已決定→現在完成式|t_present_perfect] to hire you already. You [are|現在→簡單現在式|t_simple_present] the most enthusiastic applicant we [have ever met|ever + 經驗→現在完成式|t_present_perfect].”",
+          "I could hardly believe it. I [have been working|for a month 持續到現在→現在完成進行式|t_present_perfect_cont] at the café for a month now, and I [have been enjoying|持續享受→現在完成進行式|t_present_perfect_cont] every moment. Next week, I [will use|next week→will|t_will] my first salary to buy my mother a birthday present. I am sure she [will be|未來→will|t_will] proud of me."
+        ]
+      },
+      {
+        title: "Exercise 10", tag: "Passage cloze（短文填充）", type: "input",
+        instr: "用括號內動詞的正確形式完成短文。",
+        items: [
+          "Last Friday [was|過去→簡單過去式|t_simple_past] the day of the inter-school basketball final. Our team [had been preparing|一整年持續準備→過去完成進行式|t_past_perfect_cont] for this match for the whole year. We [trained|過去習慣→簡單過去式|t_simple_past] every evening, and our coach [never let|過去習慣→簡單過去式|t_simple_past] us rest until we [had perfected|在休息之前已練熟→過去完成式|t_past_perfect] every move.",
+          "In the first half, we [played|過去→簡單過去式|t_simple_past] terribly. By half-time, the other team [had already scored|by half-time 之前已→過去完成式|t_past_perfect] twenty more points than us. While we [were sitting|while + 長動作→過去進行式|t_past_continuous] in the changing room, our captain [gave|過去→簡單過去式|t_simple_past] an inspiring speech. “We [are not going to lose|堅決不輸→be going to（否定）|t_going_to] this match,” he [shouted|過去→簡單過去式|t_simple_past]. “We [have come|走到這一步（結果影響現在）→現在完成式|t_present_perfect] this far, and we [will not throw|未來→will（否定）|t_will] it away now.”",
+          "The second half [was|過去→簡單過去式|t_simple_past] completely different. We [played|過去→簡單過去式|t_simple_past] with such energy that the crowd [cheered|過去→簡單過去式|t_simple_past] wildly. With only ten seconds left, I [managed|過去→簡單過去式|t_simple_past] to score the winning basket. The moment I [did|過去→簡單過去式|t_simple_past] that, the whole gymnasium [erupted|過去→簡單過去式|t_simple_past]. I [had never felt|before 之前從未→過去完成式|t_past_perfect] such joy before. Even now, I [still remember|現在仍記得→簡單現在式|t_simple_present] every detail of that afternoon. It [remains|現在→簡單現在式|t_simple_present] one of the happiest moments of my life."
+        ]
+      }
     ]
   }
 ];
 
-let correctCount = 0, answeredCount = 0, totalBlanks = 0;
-const allBlanks = [];
+/* ===================== 引擎 ===================== */
+function norm(s) { return String(s).toLowerCase().replace(/\s+/g, ' ').trim(); }
+function display(word, cap) { return cap ? word.charAt(0).toUpperCase() + word.slice(1) : word; }
 
-function display(word, cap) {
-  return cap ? word.charAt(0).toUpperCase() + word.slice(1) : word;
-}
-
-function parseSentence(s) {
+function parseMarkup(s) {
   const tokens = [];
-  const re = /\[([^\]|]+)(?:\|([^\]]*))?\]/g;
+  const re = /\[([^\]|]+)\|([^\]|]*)\|([^\]|]*)\]/g;
   let last = 0, m;
   while ((m = re.exec(s))) {
     if (m.index > last) tokens.push({ t: s.slice(last, m.index) });
-    tokens.push({ blank: m[1].toLowerCase(), cap: m.index === 0, zh: m[2] || "" });
+    const ans = m[1].split('/').map(x => norm(x));
+    tokens.push({ blank: true, answers: ans, primary: m[1].split('/')[0].trim(), zh: m[2] || '', recap: m[3] || '', cap: m.index === 0 });
     last = m.index + m[0].length;
   }
   if (last < s.length) tokens.push({ t: s.slice(last) });
   return tokens;
 }
 
-function updateScore() {
-  document.getElementById("score").textContent = correctCount;
-  document.getElementById("answered").textContent = answeredCount;
-  document.getElementById("total").textContent = totalBlanks;
+function recapBlock(key) {
+  const r = RECAPS[key];
+  if (!r) return '';
+  return '<button class="recap-toggle" type="button">📖 知識點 recap</button>' +
+         '<div class="recap"><b>' + r.title + '</b><br>' + r.body + '</div>';
 }
 
-function closeBlank(btn) {
-  btn.dataset.state = "idle";
-  btn.classList.remove("open");
-  btn.textContent = "____";
+function attachRecap(host) {
+  host.querySelectorAll('.recap-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const c = btn.nextElementSibling;
+      if (c && c.classList.contains('recap')) { c.classList.toggle('open'); btn.textContent = c.classList.contains('open') ? '收起 recap' : '📖 知識點 recap'; }
+    });
+  });
 }
 
-function openBlank(btn, exIndex) {
-  if (btn.dataset.state === "done") return;
-  if (btn.dataset.state === "open") { closeBlank(btn); return; }
-  const ans = btn.dataset.answer;
-  const cap = btn.dataset.cap === "1";
-  const zh = btn.dataset.zh || "";
-  const choices = exercises[exIndex].choices;
-  btn.dataset.state = "open";
-  btn.classList.add("open");
-  btn.textContent = "";
+/* ---------- 每個 subject 的狀態 ---------- */
+function makeSubjectState(subject) {
+  return { subject, correct: 0, answered: 0, total: 0, answerables: [] };
+}
+
+function updateScore(st) {
+  const el = document.getElementById('score-' + st.subject.key);
+  if (el) {
+    el.textContent = st.correct;
+    document.getElementById('answered-' + st.subject.key).textContent = st.answered;
+    document.getElementById('total-' + st.subject.key).textContent = st.total;
+  }
+}
+
+/* ---------- choice blank ---------- */
+function renderChoiceBlank(tok, exChoices, st) {
+  const btn = document.createElement('span');
+  btn.className = 'bk';
+  btn.dataset.answers = tok.answers.join('/');
+  btn.dataset.primary = tok.primary;
+  btn.dataset.cap = tok.cap ? '1' : '0';
+  btn.dataset.zh = tok.zh;
+  btn.dataset.recap = tok.recap;
+  btn.dataset.state = 'idle';
+  btn.textContent = '____';
+  btn.addEventListener('click', () => {
+    if (btn.dataset.state === 'done') return;
+    if (btn.dataset.state === 'open') { closeChoice(btn); return; }
+    openChoice(btn, exChoices, st);
+  });
+  st.answerables.push(btn);
+  st.total++;
+  return btn;
+}
+
+function closeChoice(btn) {
+  btn.dataset.state = 'idle';
+  btn.classList.remove('open');
+  btn.textContent = '____';
+}
+
+function openChoice(btn, choices, st) {
+  const ans = btn.dataset.answers.split('/')[0];
+  const cap = btn.dataset.cap === '1';
+  btn.dataset.state = 'open';
+  btn.classList.add('open');
+  btn.textContent = '';
   choices.forEach(c => {
-    const b = document.createElement("button");
-    b.className = "choice";
-    b.textContent = c;
-    b.addEventListener("click", e => {
+    const b = document.createElement('button');
+    b.className = 'choice'; b.type = 'button'; b.textContent = c;
+    b.addEventListener('click', e => {
       e.stopPropagation();
-      if (btn.dataset.state !== "open") return;
-      btn.dataset.state = "done";
-      btn.classList.remove("open");
-      btn.textContent = "";
+      if (btn.dataset.state !== 'open') return;
+      btn.dataset.state = 'done';
+      btn.classList.remove('open');
+      btn.textContent = '';
       if (c === ans) {
-        const s = document.createElement("span");
-        s.className = "fill correct";
-        s.textContent = display(c, cap);
-        btn.appendChild(s);
-        correctCount++;
+        const s = document.createElement('span'); s.className = 'fill correct'; s.textContent = display(c, cap);
+        btn.appendChild(s); st.correct++;
       } else {
-        const s = document.createElement("span");
-        s.className = "fill wrong";
-        s.textContent = display(c, cap);
+        const s = document.createElement('span'); s.className = 'fill wrong'; s.textContent = display(c, cap);
         btn.appendChild(s);
-        const hint = document.createElement("span");
-        hint.className = "hint";
-        hint.textContent = "→ " + display(ans, cap);
-        btn.appendChild(hint);
-        if (zh) {
-          const z = document.createElement("span");
-          z.className = "hint-zh";
-          z.textContent = zh;
-          btn.appendChild(z);
-        }
+        const fb = document.createElement('span'); fb.className = 'fb';
+        const hint = document.createElement('span'); hint.className = 'hint'; hint.textContent = '→ ' + display(ans, cap);
+        fb.appendChild(hint);
+        if (btn.dataset.zh) { const z = document.createElement('span'); z.className = 'hint-zh'; z.textContent = btn.dataset.zh; fb.appendChild(z); }
+        btn.appendChild(fb);
+        if (btn.dataset.recap) { const r = document.createElement('span'); r.innerHTML = recapBlock(btn.dataset.recap); btn.appendChild(r); attachRecap(btn); }
       }
-      answeredCount++;
-      updateScore();
+      st.answered++;
+      updateScore(st);
     });
     btn.appendChild(b);
   });
 }
 
-function render() {
-  correctCount = 0; answeredCount = 0; totalBlanks = 0;
-  allBlanks.length = 0;
-  const host = document.getElementById("exercises");
-  host.innerHTML = "";
-
-  exercises.forEach((ex, exIndex) => {
-    const sec = document.createElement("section");
-    const h2 = document.createElement("h2");
-    h2.textContent = ex.title;
-    const tag = document.createElement("span");
-    tag.className = "tag";
-    tag.textContent = ex.choices.join(" / ");
-    h2.appendChild(tag);
-    sec.appendChild(h2);
-
-    const ol = document.createElement("ol");
-    ex.raw.forEach(s => {
-      const li = document.createElement("li");
-      parseSentence(s).forEach(tok => {
-        if (tok.t) { li.appendChild(document.createTextNode(tok.t)); return; }
-        const btn = document.createElement("span");
-        btn.className = "bk";
-        btn.dataset.answer = tok.blank;
-        btn.dataset.cap = tok.cap ? "1" : "0";
-        btn.dataset.zh = tok.zh || "";
-        btn.dataset.state = "idle";
-        btn.textContent = "____";
-        btn.addEventListener("click", () => openBlank(btn, exIndex));
-        li.appendChild(btn);
-        allBlanks.push(btn);
-        totalBlanks++;
-      });
-      ol.appendChild(li);
-    });
-    sec.appendChild(ol);
-    host.appendChild(sec);
-  });
-
-  updateScore();
+/* ---------- type-in blank ---------- */
+function renderInputBlank(tok, st) {
+  const wrap = document.createElement('span');
+  wrap.className = 'iw';
+  const inp = document.createElement('input');
+  inp.className = 'ans';
+  inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false;
+  inp.dataset.answers = tok.answers.join('/');
+  inp.dataset.primary = tok.primary;
+  inp.dataset.cap = tok.cap ? '1' : '0';
+  inp.dataset.zh = tok.zh;
+  inp.dataset.recap = tok.recap;
+  inp.dataset.state = 'idle';
+  inp.placeholder = '…';
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') submitInput(inp, st); });
+  inp.addEventListener('blur', () => submitInput(inp, st));
+  wrap.appendChild(inp);
+  st.answerables.push(inp);
+  st.total++;
+  return wrap;
 }
 
-document.getElementById("reveal").addEventListener("click", () => {
-  allBlanks.forEach(btn => {
-    if (btn.dataset.state === "done") return;
-    btn.dataset.state = "done";
-    btn.classList.remove("open");
-    btn.textContent = "";
-    const s = document.createElement("span");
-    s.className = "fill correct";
-    s.textContent = display(btn.dataset.answer, btn.dataset.cap === "1");
-    btn.appendChild(s);
-    if (btn.dataset.zh) {
-      const z = document.createElement("span");
-      z.className = "hint-zh";
-      z.textContent = btn.dataset.zh;
-      btn.appendChild(z);
-    }
+function submitInput(inp, st) {
+  if (inp.dataset.state === 'done') return;
+  const val = norm(inp.value);
+  if (!val) return;
+  const accepted = inp.dataset.answers.split('/').map(norm);
+  const cap = inp.dataset.cap === '1';
+  inp.dataset.state = 'done';
+  inp.readOnly = true;
+  const fb = document.createElement('span');
+  fb.className = 'fb';
+  if (accepted.includes(val)) {
+    inp.classList.add('correct');
+    const b = document.createElement('span'); b.className = 'badge ok'; b.textContent = '✓';
+    fb.appendChild(b);
+    st.correct++;
+  } else {
+    inp.classList.add('wrong');
+    const b = document.createElement('span'); b.className = 'badge no'; b.textContent = '✗';
+    fb.appendChild(b);
+    const hint = document.createElement('span'); hint.className = 'hint';
+    hint.textContent = '→ ' + display(inp.dataset.primary, cap) + (inp.dataset.answers.includes('/') ? '（或 ' + inp.dataset.answers.split('/').slice(1).join(' / ') + '）' : '');
+    fb.appendChild(hint);
+    if (inp.dataset.zh) { const z = document.createElement('span'); z.className = 'hint-zh'; z.textContent = inp.dataset.zh; fb.appendChild(z); }
+    if (inp.dataset.recap) { const r = document.createElement('span'); r.innerHTML = recapBlock(inp.dataset.recap); fb.appendChild(r); attachRecap(fb); }
+  }
+  inp.parentElement.appendChild(fb);
+  st.answered++;
+  updateScore(st);
+}
+
+/* ---------- MC ---------- */
+function renderMc(item, st) {
+  const box = document.createElement('div');
+  box.className = 'mc-item';
+  box.style.marginBottom = '16px';
+  const q = document.createElement('div'); q.className = 'mc-q'; q.textContent = item.q;
+  box.appendChild(q);
+  const opts = document.createElement('div'); opts.className = 'mc-opts';
+  opts.dataset.ans = item.ans;
+  const letters = ['A', 'B', 'C', 'D'];
+  item.opts.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'mcopt'; b.type = 'button';
+    b.textContent = letters[i] + '.  ' + o;
+    b.addEventListener('click', () => {
+      if (b.disabled) return;
+      opts.querySelectorAll('button').forEach(x => x.disabled = true);
+      if (i === item.ans) { b.classList.add('correct'); st.correct++; }
+      else {
+        b.classList.add('wrong');
+        opts.querySelectorAll('button')[item.ans].classList.add('correct');
+      }
+      const fb = document.createElement('div'); fb.className = 'fb'; fb.style.marginTop = '6px';
+      if (i === item.ans) { const s = document.createElement('span'); s.className = 'badge ok'; s.textContent = '✓ 答對'; fb.appendChild(s); }
+      else {
+        const s = document.createElement('span'); s.className = 'badge no'; s.textContent = '✗ 答錯'; fb.appendChild(s);
+        const hint = document.createElement('span'); hint.className = 'hint'; hint.textContent = '答案：' + letters[item.ans]; fb.appendChild(hint);
+        if (item.zh) { const z = document.createElement('span'); z.className = 'hint-zh'; z.textContent = item.zh; fb.appendChild(z); }
+        if (item.recap) { const r = document.createElement('span'); r.innerHTML = recapBlock(item.recap); fb.appendChild(r); attachRecap(fb); }
+      }
+      box.appendChild(fb);
+      st.answered++;
+      updateScore(st);
+    });
+    opts.appendChild(b);
   });
-});
+  box.appendChild(opts);
+  st.total++;
+  return box;
+}
 
-document.getElementById("reset").addEventListener("click", render);
+/* ---------- 渲染整個 subject ---------- */
+const LIVE = {};
+function renderSubject(subject) {
+  const st = makeSubjectState(subject);
+  LIVE[subject.key] = st;
+  const wrap = document.createElement('div');
+  wrap.className = 'subject';
+  wrap.id = 'subject-' + subject.key;
 
-render();
+  const head = document.createElement('div');
+  head.className = 'subject-head';
+  head.innerHTML =
+    '<h1>' + subject.label + '</h1>' +
+    '<div class="sub">' + subject.sub + '　·　點擊空格選擇或打字作答，答錯會顯示正確答案＋中文解釋＋知識點 recap。</div>' +
+    '<div class="scorebar"><span>Correct 答對: <b id="score-' + subject.key + '">0</b></span>' +
+    '<span>Answered 已答: <span id="answered-' + subject.key + '">0</span></span>' +
+    '<span>Total 總題: <span id="total-' + subject.key + '">0</span></span></div>' +
+    '<div class="actions">' +
+    '<button class="action" data-reveal>Reveal all 顯示答案</button>' +
+    '<button class="action" data-reset>Reset 重做</button>' +
+    '</div>';
+  wrap.appendChild(head);
+
+  const jump = document.createElement('div');
+  jump.className = 'jump';
+  subject.exercises.forEach((ex, i) => {
+    const a = document.createElement('a');
+    a.href = '#ex-' + subject.key + '-' + i;
+    a.textContent = ex.title;
+    jump.appendChild(a);
+  });
+  wrap.appendChild(jump);
+
+  subject.exercises.forEach((ex, i) => {
+    const sec = document.createElement('section');
+    sec.className = 'ex';
+    sec.id = 'ex-' + subject.key + '-' + i;
+    const h2 = document.createElement('h2');
+    h2.textContent = ex.title;
+    if (ex.tag) { const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = ex.tag; h2.appendChild(tag); }
+    sec.appendChild(h2);
+    if (ex.instr) { const p = document.createElement('div'); p.className = 'instr'; p.textContent = ex.instr; sec.appendChild(p); }
+
+    if (ex.type === 'mc') {
+      ex.items.forEach(item => sec.appendChild(renderMc(item, st)));
+    } else {
+      const ol = document.createElement('ol');
+      ex.items.forEach(s => {
+        const li = document.createElement('li');
+        parseMarkup(s).forEach(tok => {
+          if (tok.t) { li.appendChild(document.createTextNode(tok.t)); return; }
+          if (ex.type === 'choice') li.appendChild(renderChoiceBlank(tok, ex.choices, st));
+          else li.appendChild(renderInputBlank(tok, st));
+        });
+        ol.appendChild(li);
+      });
+      sec.appendChild(ol);
+      if (ex.type === 'input') {
+        const row = document.createElement('div'); row.className = 'check-row';
+        const btn = document.createElement('button'); btn.className = 'action'; btn.type = 'button';
+        btn.textContent = 'Check 檢查本練習';
+        btn.addEventListener('click', () => {
+          st.answerables.forEach(a => { if (a.tagName === 'INPUT' && a.dataset.state === 'idle') submitInput(a, st); });
+        });
+        row.appendChild(btn);
+        sec.appendChild(row);
+      }
+    }
+    wrap.appendChild(sec);
+  });
+
+  // reveal / reset
+  head.querySelector('[data-reveal]').addEventListener('click', () => {
+    st.answerables.forEach(a => {
+      if (a.dataset.state === 'done') return;
+      a.dataset.state = 'done';
+      if (a.tagName === 'INPUT') {
+        a.value = display(a.dataset.primary, a.dataset.cap === '1');
+        a.readOnly = true; a.classList.add('revealed');
+      } else if (a.classList.contains('bk')) {
+        a.classList.remove('open');
+        a.textContent = '';
+        const s = document.createElement('span'); s.className = 'fill correct'; s.textContent = display(a.dataset.primary, a.dataset.cap === '1');
+        a.appendChild(s);
+      }
+    });
+    // reveal MC correct options too
+    wrap.querySelectorAll('.mc-opts').forEach(opts => {
+      if (opts.querySelector('button:disabled')) return;
+      const btns = opts.querySelectorAll('button');
+      btns.forEach(b => b.disabled = true);
+      btns[Number(opts.dataset.ans)].classList.add('correct');
+    });
+  });
+  head.querySelector('[data-reset]').addEventListener('click', () => {
+    const parent = wrap.parentElement;
+    const fresh = renderSubject(subject);
+    parent.replaceChild(fresh, wrap);
+    fresh.classList.add('active');
+    updateScore(fresh._st);
+  });
+
+  wrap._st = st;
+  updateScore(st);
+  return wrap;
+}
+
+/* ---------- 初始化 ---------- */
+function init() {
+  const main = document.getElementById('main');
+  SUBJECTS.forEach(subject => {
+    const w = renderSubject(subject);
+    main.appendChild(w);
+  });
+  // tab switching
+  const tabs = document.querySelectorAll('.sidebar button.tab');
+  function activate(key) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.subject === key));
+    document.querySelectorAll('.subject').forEach(s => s.classList.toggle('active', s.id === 'subject-' + key));
+    updateScore(LIVE[key]);
+  }
+  tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.subject)));
+  activate('prepositions');
+}
+
+init();
 </script>
 </body>
 </html>
