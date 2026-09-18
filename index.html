@@ -50,6 +50,29 @@
   a.action:hover { background: #f0f3ff; border-color: var(--accent); }
   .download-bar { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .download-bar .dl-note { font-size: 12.5px; color: #6b7280; }
+  /* vocab */
+  .wrow { display: flex; align-items: baseline; gap: 8px; padding: 6px 2px; border-bottom: 1px solid #f0f2f6; flex-wrap: wrap; }
+  .wrow .w { font-weight: 600; font-size: 16px; min-width: 96px; color: #1f2430; }
+  .wrow .pos { color: #8a93a6; font-size: 12px; min-width: 40px; }
+  .wrow .c { color: #333; min-width: 78px; }
+  .wrow .ex { color: #6b7280; font-size: 13.5px; flex: 1 1 220px; }
+  .speak-btn { border: none; background: transparent; cursor: pointer; font-size: 15px; padding: 0 2px; }
+  .speak-btn:hover { transform: scale(1.15); }
+  .quiz { margin-top: 10px; background: #f8fafc; border: 1px solid #e6ecf4; border-radius: 10px; padding: 12px 14px; }
+  .quiz-q { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; flex-wrap: wrap; }
+  .quiz-q .zh { font-weight: 600; min-width: 90px; }
+  .quiz-q input { width: 160px; font: inherit; font-size: 14px; padding: 3px 8px; border-radius: 7px; border: 1.5px solid #c8d0dd; outline: none; }
+  .quiz-q input.correct { border-color: var(--green); background: var(--green-bg); }
+  .quiz-q input.wrong { border-color: var(--red); background: var(--red-bg); }
+  /* listening */
+  .listen-unit { border-top: 1px solid #eef1f6; padding-top: 6px; }
+  .lu-q { margin: 10px 0 4px; font-size: 15px; }
+  .lu-q .lbl { font-weight: 600; color: #3b4fbf; margin-right: 6px; }
+  .drill { background: #f8fafc; border: 1px solid #e6ecf4; border-radius: 10px; padding: 12px 14px; margin-top: 10px; }
+  .drill .drill-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .transcript-toggle { cursor: pointer; color: #3b4fbf; font-size: 13px; background: none; border: none; padding: 0; }
+  .transcript { display: none; margin-top: 8px; padding: 10px 12px; background: #f8fafc; border: 1px solid #e6ecf4; border-radius: 8px; font-size: 14px; line-height: 1.8; color: #444; }
+  .transcript.open { display: block; }
   .jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 4px; }
   .jump a {
     font-size: 12px; color: #3b4fbf; text-decoration: none; background: #eef2ff;
@@ -137,13 +160,17 @@
 <body>
   <aside class="sidebar">
     <p class="brand">Grammar Practice</p>
-    <p class="brand-sub">介詞 · 時態</p>
+    <p class="brand-sub">介詞 · 時態 · 詞彙 · 聆聽</p>
     <button class="tab" data-subject="prepositions">介詞 <span class="tab-note">Prepositions · 5 份</span></button>
     <button class="tab" data-subject="tenses">時態 <span class="tab-note">Tenses · 10 份</span></button>
+    <button class="tab" data-subject="vocab">詞彙 <span class="tab-note">Vocabulary · 高頻字</span></button>
+    <button class="tab" data-subject="listening">聆聽 <span class="tab-note">Listening · A1</span></button>
   </aside>
 
   <div class="main" id="main"></div>
 
+<script src="vocab-data.js"></script>
+<script src="listening-data.js"></script>
 <script>
 
 /* ===================== RECAPS（知識點 recap 字典） ===================== */
@@ -1178,12 +1205,222 @@ function renderSubject(subject) {
 }
 
 /* ---------- 初始化 ---------- */
+/* ===================== 詞彙 & 聆聽 ===================== */
+function speak(text, rate) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  if (rate) u.rate = rate;
+  const voices = window.speechSynthesis.getVoices();
+  const en = voices.find(v => v.lang && v.lang.slice(0, 2) === 'en' && /Samantha|Daniel|Karen|Serena|Google|Microsoft|Aria|Jenny/i.test(v.name)) ||
+             voices.find(v => v.lang && v.lang.slice(0, 2) === 'en');
+  if (en) u.voice = en;
+  window.speechSynthesis.speak(u);
+}
+
+function numberToWords(n) {
+  const ones = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const tens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  if (n < 20) return ones[n];
+  const t = Math.floor(n / 10), o = n % 10;
+  return o ? tens[t] + '-' + ones[o] : tens[t];
+}
+
+function renderVocab() {
+  const st = makeSubjectState({ key: 'vocab', label: '詞彙' });
+  LIVE['vocab'] = st;
+  const wrap = document.createElement('div');
+  wrap.className = 'subject'; wrap.id = 'subject-vocab';
+
+  const head = document.createElement('div');
+  head.className = 'subject-head';
+  head.innerHTML = '<h1>詞彙 Vocabulary</h1>' +
+    '<div class="sub">高頻核心 300 字 ＋ 考試指令詞 ＋ 8 大主題。每字按 🔊 聽發音；每組可開「測驗」默寫。</div>';
+  wrap.appendChild(head);
+
+  VOCAB.forEach((set, si) => {
+    const sec = document.createElement('section');
+    sec.className = 'ex'; sec.id = 'vocab-' + si;
+    const h2 = document.createElement('h2');
+    h2.textContent = set.title;
+    const tag = document.createElement('span');
+    tag.className = 'tag'; tag.textContent = set.words.length + ' 字';
+    h2.appendChild(tag);
+    sec.appendChild(h2);
+
+    const list = document.createElement('div');
+    set.words.forEach(w => {
+      const p = w.split('|');
+      const [en, zh, pos, ex, exc] = p;
+      const row = document.createElement('div'); row.className = 'wrow';
+      const sp = document.createElement('button'); sp.className = 'speak-btn'; sp.type = 'button'; sp.textContent = '🔊'; sp.title = '聽發音';
+      sp.addEventListener('click', () => speak(en));
+      const wEl = document.createElement('span'); wEl.className = 'w'; wEl.textContent = en;
+      const posEl = document.createElement('span'); posEl.className = 'pos'; posEl.textContent = pos;
+      const cEl = document.createElement('span'); cEl.className = 'c'; cEl.textContent = zh;
+      const exEl = document.createElement('span'); exEl.className = 'ex'; exEl.textContent = ex + '　' + exc;
+      row.appendChild(sp); row.appendChild(wEl); row.appendChild(posEl); row.appendChild(cEl); row.appendChild(exEl);
+      list.appendChild(row);
+    });
+    sec.appendChild(list);
+
+    const quizArea = document.createElement('div'); quizArea.className = 'quiz';
+    const quizBtn = document.createElement('button');
+    quizBtn.className = 'action'; quizBtn.type = 'button'; quizBtn.textContent = '測驗這組（默寫）';
+    quizBtn.addEventListener('click', () => {
+      if (quizBtn.dataset.on === '1') { quizArea.innerHTML = ''; quizBtn.dataset.on = '0'; quizBtn.textContent = '測驗這組（默寫）'; return; }
+      quizBtn.dataset.on = '1'; quizBtn.textContent = '收起測驗';
+      quizArea.innerHTML = '';
+      set.words.forEach(w => {
+        const p = w.split('|'); const en = p[0], zh = p[1];
+        const q = document.createElement('div'); q.className = 'quiz-q';
+        const z = document.createElement('span'); z.className = 'zh'; z.textContent = zh;
+        const sp = document.createElement('button'); sp.className = 'speak-btn'; sp.type = 'button'; sp.textContent = '🔊';
+        sp.addEventListener('click', () => speak(en));
+        const inp = document.createElement('input'); inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.placeholder = '英文單字';
+        const fb = document.createElement('span');
+        const check = () => {
+          if (inp.dataset.done === '1') return;
+          const v = norm(inp.value); if (!v) return;
+          inp.dataset.done = '1';
+          if (norm(en) === v) { inp.classList.add('correct'); fb.innerHTML = '<span class="badge ok">✓</span>'; }
+          else { inp.classList.add('wrong'); fb.innerHTML = '<span class="badge no">✗</span> <span class="hint">→ ' + en + '</span>'; }
+        };
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+        inp.addEventListener('blur', check);
+        q.appendChild(z); q.appendChild(sp); q.appendChild(inp); q.appendChild(fb);
+        quizArea.appendChild(q);
+      });
+    });
+    sec.appendChild(quizBtn);
+    sec.appendChild(quizArea);
+    wrap.appendChild(sec);
+  });
+
+  const dl = document.createElement('div'); dl.className = 'download-bar';
+  dl.innerHTML = '<a class="action" href="pdfs/vocabulary.pdf" download>⬇ 下載詞彙 PDF</a>' +
+                 '<a class="action" href="pdfs/plan.pdf" download>⬇ 下載 30 日計劃 PDF</a>' +
+                 '<span class="dl-note">黑白可列印（詞彙表＋默寫練習）／30 日自學計劃。</span>';
+  wrap.appendChild(dl);
+  return wrap;
+}
+
+function renderListening() {
+  const st = makeSubjectState({ key: 'listening', label: '聆聽' });
+  LIVE['listening'] = st;
+  const wrap = document.createElement('div');
+  wrap.className = 'subject'; wrap.id = 'subject-listening';
+
+  const head = document.createElement('div');
+  head.className = 'subject-head';
+  head.innerHTML = '<h1>聆聽 Listening</h1>' +
+    '<div class="sub">真人錄音（ELLLO A1）＋ 數字／拼字基本功。點「▶ 播放真人音檔」在新視窗聽，再回來作答。</div>' +
+    '<div class="scorebar"><span>Correct 答對: <b id="score-listening">0</b></span><span>Answered 已答: <span id="answered-listening">0</span></span><span>Total 總題: <span id="total-listening">0</span></span></div>' +
+    '<div class="actions"><button class="action" data-reset>Reset 重做</button></div>';
+  wrap.appendChild(head);
+
+  LISTENING.forEach((u) => {
+    const sec = document.createElement('section'); sec.className = 'ex';
+    const h2 = document.createElement('h2');
+    h2.textContent = u.title;
+    const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = u.topic;
+    h2.appendChild(tag);
+    sec.appendChild(h2);
+
+    const links = document.createElement('div');
+    links.style.margin = '4px 0 10px';
+    links.innerHTML = '<a class="action" href="' + u.audio + '" target="_blank" rel="noopener">▶ 播放真人音檔</a> ' +
+                      '<a class="action" href="' + u.page + '" target="_blank" rel="noopener">看原文稿（ELLLO）</a>';
+    sec.appendChild(links);
+
+    const pl = document.createElement('div'); pl.className = 'lu-q';
+    pl.innerHTML = '<span class="lbl">① 聽前預測</span>';
+    sec.appendChild(pl);
+    sec.appendChild(renderMc({ q: u.predict.q, opts: u.predict.opts, ans: u.predict.ans, zh: u.predict.zh, recap: null }, st));
+
+    const kw = document.createElement('div'); kw.className = 'lu-q';
+    kw.innerHTML = '<span class="lbl">② 關鍵字抓取</span>';
+    sec.appendChild(kw);
+    u.keywords.forEach((k, ki) => {
+      const row = document.createElement('div'); row.className = 'quiz-q';
+      const z = document.createElement('span'); z.className = 'zh'; z.style.minWidth = '0'; z.style.flex = '1 1 230px'; z.style.fontWeight = '400';
+      z.textContent = (ki + 1) + '. ' + k.q;
+      const tok = { blank: true, answers: k.ans.map(norm), primary: k.ans[0], base: null, zh: k.zh, recap: null, cap: false };
+      row.appendChild(z);
+      row.appendChild(renderInputBlank(tok, st));
+      sec.appendChild(row);
+    });
+
+    const cl = document.createElement('div'); cl.className = 'lu-q';
+    cl.innerHTML = '<span class="lbl">③ 聽寫填空</span>';
+    sec.appendChild(cl);
+    const clozeDiv = document.createElement('div'); clozeDiv.style.fontSize = '16px';
+    parseMarkup(u.cloze).forEach(tok => {
+      if (tok.t) clozeDiv.appendChild(document.createTextNode(tok.t));
+      else clozeDiv.appendChild(renderInputBlank(tok, st));
+    });
+    sec.appendChild(clozeDiv);
+    wrap.appendChild(sec);
+  });
+
+  // 基本功 drills
+  const dsec = document.createElement('section'); dsec.className = 'ex';
+  dsec.innerHTML = '<h2>聽寫基本功<span class="tag">數字 · 拼字（電腦語音）</span></h2>' +
+    '<div class="instr">這兩項用電腦語音（非真人）練習——數字與拼字是香港聆聽卷最常出的題型。按 🔊 聽，輸入答案後按 Enter。</div>';
+
+  const numBox = document.createElement('div'); numBox.className = 'drill';
+  numBox.innerHTML = '<b>數字 Numbers</b><div class="drill-row"><button class="action" type="button" data-num-play>🔊 聽數字</button>' +
+    '<input type="text" placeholder="輸入數字，如 23" data-num-inp><span data-num-fb></span></div>';
+  dsec.appendChild(numBox);
+  let currentNum = null;
+  numBox.querySelector('[data-num-play]').addEventListener('click', () => { currentNum = Math.floor(Math.random() * 99) + 1; speak(numberToWords(currentNum), 0.8); });
+  numBox.querySelector('[data-num-inp]').addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const v = e.target.value.trim(); const fb = numBox.querySelector('[data-num-fb]');
+      if (v === String(currentNum)) fb.innerHTML = '<span class="badge ok">✓ 答對</span>';
+      else fb.innerHTML = '<span class="badge no">✗ 答錯</span> <span class="hint">→ ' + currentNum + '</span>';
+    }
+  });
+
+  const spBox = document.createElement('div'); spBox.className = 'drill';
+  spBox.innerHTML = '<b>拼字 Spelling</b><div class="drill-row"><button class="action" type="button" data-sp-play>🔊 聽拼字</button>' +
+    '<input type="text" placeholder="輸入拼出的單字" data-sp-inp><span data-sp-fb></span></div>';
+  dsec.appendChild(spBox);
+  let currentWord = null;
+  spBox.querySelector('[data-sp-play]').addEventListener('click', () => { currentWord = SPELLING_WORDS[Math.floor(Math.random() * SPELLING_WORDS.length)]; speak(currentWord.toUpperCase().split('').join(' '), 0.8); });
+  spBox.querySelector('[data-sp-inp]').addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const v = norm(e.target.value); const fb = spBox.querySelector('[data-sp-fb]');
+      if (v === norm(currentWord)) fb.innerHTML = '<span class="badge ok">✓ 答對</span>';
+      else fb.innerHTML = '<span class="badge no">✗ 答錯</span> <span class="hint">→ ' + currentWord + '</span>';
+    }
+  });
+  wrap.appendChild(dsec);
+
+  const dl = document.createElement('div'); dl.className = 'download-bar';
+  dl.innerHTML = '<a class="action" href="pdfs/listening.pdf" download>⬇ 下載聆聽練習 PDF</a>' +
+                 '<a class="action" href="pdfs/plan.pdf" download>⬇ 下載 30 日計劃 PDF</a>';
+  wrap.appendChild(dl);
+
+  head.querySelector('[data-reset]').addEventListener('click', () => {
+    const parent = wrap.parentElement;
+    const fresh = renderListening();
+    parent.replaceChild(fresh, wrap);
+    fresh.classList.add('active');
+  });
+
+  return wrap;
+}
+
 function init() {
   const main = document.getElementById('main');
   SUBJECTS.forEach(subject => {
     const w = renderSubject(subject);
     main.appendChild(w);
   });
+  main.appendChild(renderVocab());
+  main.appendChild(renderListening());
   // tab switching
   const tabs = document.querySelectorAll('.sidebar button.tab');
   function activate(key) {
