@@ -91,6 +91,7 @@
   input.ans.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); font-weight: 600; }
   input.ans.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
   input.ans.revealed { border-color: #b0b7c3; background: #eef1f6; color: #334; }
+  .base-hint { color: #8a93a6; font-size: 13.5px; margin-left: 2px; }
   .fill.correct { color: var(--green); background: var(--green-bg); padding: 0 9px; border-radius: 6px; font-weight: 600; }
   .fill.wrong { color: var(--red); background: var(--red-bg); padding: 0 9px; border-radius: 6px; font-weight: 600; }
   .hint { color: var(--green); font-weight: 700; }
@@ -144,6 +145,7 @@
   <div class="main" id="main"></div>
 
 <script>
+
 /* ===================== RECAPS（知識點 recap 字典） ===================== */
 const RECAPS = {
   /* ---- Tenses ---- */
@@ -251,13 +253,20 @@ const RECAPS = {
 /* ===================== 題目資料 ===================== */
 const SUBJECTS = [
   {
-    key: "prepositions", label: "介詞 Prepositions",
-    sub: "at / in / on · to / for / from · against · by / of",
-    exercises: [
+    "key": "prepositions",
+    "label": "介詞 Prepositions",
+    "sub": "at / in / on · to / for / from · against · by / of",
+    "exercises": [
       {
-        title: "Exercise 1", tag: "at / in / on", type: "choice",
-        choices: ["at", "in", "on"],
-        items: [
+        "title": "Exercise 1",
+        "tag": "at / in / on",
+        "type": "choice",
+        "choices": [
+          "at",
+          "in",
+          "on"
+        ],
+        "items": [
           "Come [in|come in 是固定搭配，解「進來」，in 表示進入|p_in_place] and close the door [at|at once 是固定搭配，解「立刻」|p_at_time] once.",
           "Hold [on|hold on 是固定搭配，解「稍等」|p_phrase] please and Mr Lee will be with you [in|in a moment 解「一會兒」，指一段時間後|p_in_time] a moment.",
           "The show ended [at|at + 具體時間點（五時五分）|p_at_time] five minutes past one [in|in the afternoon 用 in + 時段|p_in_time] the afternoon.",
@@ -281,9 +290,15 @@ const SUBJECTS = [
         ]
       },
       {
-        title: "Exercise 2", tag: "to / for / from", type: "choice",
-        choices: ["to", "for", "from"],
-        items: [
+        "title": "Exercise 2",
+        "tag": "to / for / from",
+        "type": "choice",
+        "choices": [
+          "to",
+          "for",
+          "from"
+        ],
+        "items": [
           "The prisoner was released [from|release from 解「從…釋放」，from + 來源|p_from] prison yesterday.",
           "[To|to my surprise 是固定搭配，解「令我驚訝」|p_to] my surprise, no one failed in the short quiz.",
           "Manchester is [to|to the north of 表示方位「在…的北方」|p_to] the north of London.",
@@ -307,9 +322,16 @@ const SUBJECTS = [
         ]
       },
       {
-        title: "Exercise 3", tag: "to / for / from / against", type: "choice",
-        choices: ["to", "for", "from", "against"],
-        items: [
+        "title": "Exercise 3",
+        "tag": "to / for / from / against",
+        "type": "choice",
+        "choices": [
+          "to",
+          "for",
+          "from",
+          "against"
+        ],
+        "items": [
           "Move [to|move to + 方向（向左）|p_to] the left and turn round.",
           "She bought many presents [for|for + 對象（給孩子）|p_for] the children.",
           "Don't lean [against|lean against 解「靠在…上」|p_against] the wall; it is not safe.",
@@ -333,9 +355,16 @@ const SUBJECTS = [
         ]
       },
       {
-        title: "Exercise 4", tag: "by / to / for / from", type: "choice",
-        choices: ["by", "to", "for", "from"],
-        items: [
+        "title": "Exercise 4",
+        "tag": "by / to / for / from",
+        "type": "choice",
+        "choices": [
+          "by",
+          "to",
+          "for",
+          "from"
+        ],
+        "items": [
           "We must finish all our work [by|by + 時間 = 在…之前|p_by] noon tomorrow.",
           "[From|from what I know 解「據我所知」，from + 來源|p_from] what I know, we will have a new teacher next month.",
           "He gave me his old piano [for|for nothing 解「免費」|p_for] nothing.",
@@ -359,9 +388,16 @@ const SUBJECTS = [
         ]
       },
       {
-        title: "Exercise 5", tag: "by / in / of / to", type: "choice",
-        choices: ["by", "in", "of", "to"],
-        items: [
+        "title": "Exercise 5",
+        "tag": "by / in / of / to",
+        "type": "choice",
+        "choices": [
+          "by",
+          "in",
+          "of",
+          "to"
+        ],
+        "items": [
           "I think you must get rid [of|get rid of 解「擺脫」|p_of] your bad habits.",
           "Air pollution has given rise [to|give rise to 解「導致」|p_to] many cases of lung diseases.",
           "He realized that he needed to act more carefully [in|in future 解「將來」|p_in_time] future.",
@@ -387,58 +423,67 @@ const SUBJECTS = [
     ]
   },
   {
-    key: "tenses", label: "時態 Tenses",
-    sub: "Present · Past · Future（混合）",
-    exercises: [
+    "key": "tenses",
+    "label": "時態 Tenses",
+    "sub": "Present · Past · Future（混合）",
+    "exercises": [
       {
-        title: "Exercise 1", tag: "Fill in the blanks（混合時態）", type: "input",
-        items: [
-          "I [haven't seen/have not seen|since + 過去到現在沒見→現在完成式（否定）|t_present_perfect] my cousin since we [finished|since 後的子句用簡單過去式|t_simple_past] primary school.",
-          "While the chef [was cooking|while 後的長動作→過去進行式|t_past_continuous], a customer [fainted|短動作突然發生→簡單過去式|t_simple_past] suddenly.",
-          "I'm sure it [will snow|I'm sure 表猜測→will + 原形|t_will] tonight.",
-          "By the time the firemen [arrived|較後發生的動作→簡單過去式|t_simple_past], the fire [had already destroyed|較早發生→過去完成式|t_past_perfect] the whole building.",
-          "Hurry up! The bus [is coming|正在來→現在進行式|t_present_continuous]. We [will be/are going to be|預測將遲到→will ／ be going to|t_will] late for school.",
-          "She [promised|yesterday→簡單過去式|t_simple_past] to help me yesterday, but she [hasn't called/has not called|yet→現在完成式|t_present_perfect] me yet.",
-          "The shop [opens|時刻表／固定時間→簡單現在式|t_simple_present] at ten, so we still have time.",
-          "I [have been working|動作持續到現在仍未結束→現在完成進行式|t_present_perfect_cont] on this project for two weeks and I [haven't finished/have not finished|尚未完成→現在完成式|t_present_perfect] it yet.",
-          "When I [was|過去→簡單過去式|t_simple_past] young, I usually [spent|過去習慣→簡單過去式|t_simple_past] my holidays in the countryside.",
-          "By the end of this year, my father [will have been working|到未來某點已持續多久→未來完成進行式|t_future_perfect_cont] at the bank for twenty years."
+        "title": "Exercise 1",
+        "tag": "Fill in the blanks（混合時態）",
+        "type": "input",
+        "items": [
+          "I [haven't seen/have not seen|not see|since + 過去到現在沒見→現在完成式（否定）|t_present_perfect] my cousin since we [finished|finish|since 後的子句用簡單過去式|t_simple_past] primary school.",
+          "While the chef [was cooking|cook|while 後的長動作→過去進行式|t_past_continuous], a customer [fainted|faint|短動作突然發生→簡單過去式|t_simple_past] suddenly.",
+          "I'm sure it [will snow|snow|I'm sure 表猜測→will + 原形|t_will] tonight.",
+          "By the time the firemen [arrived|arrive|較後發生的動作→簡單過去式|t_simple_past], the fire [had already destroyed|already destroy|較早發生→過去完成式|t_past_perfect] the whole building.",
+          "Hurry up! The bus [is coming|come|正在來→現在進行式|t_present_continuous]. We [will be/are going to be|be|預測將遲到→will ／ be going to|t_will] late for school.",
+          "She [promised|promise|yesterday→簡單過去式|t_simple_past] to help me yesterday, but she [hasn't called/has not called|not call|yet→現在完成式|t_present_perfect] me yet.",
+          "The shop [opens|open|時刻表／固定時間→簡單現在式|t_simple_present] at ten, so we still have time.",
+          "I [have been working|work|動作持續到現在仍未結束→現在完成進行式|t_present_perfect_cont] on this project for two weeks and I [haven't finished/have not finished|not finish|尚未完成→現在完成式|t_present_perfect] it yet.",
+          "When I [was|be|過去→簡單過去式|t_simple_past] young, I usually [spent|spend|過去習慣→簡單過去式|t_simple_past] my holidays in the countryside.",
+          "By the end of this year, my father [will have been working|work|到未來某點已持續多久→未來完成進行式|t_future_perfect_cont] at the bank for twenty years."
         ]
       },
       {
-        title: "Exercise 2", tag: "Fill in the blanks（混合時態）", type: "input",
-        items: [
-          "Don't switch off the TV. I [am still watching|現在正在進行→現在進行式|t_present_continuous] the news.",
-          "She [has lost|過去動作影響現在→現在完成式|t_present_perfect] her keys, so she [cannot|現在的能力／狀態|t_simple_present] get into her flat now.",
-          "Last night, while we [were having|while + 長動作→過去進行式|t_past_continuous] dinner, the lights [went|短動作→簡單過去式|t_simple_past] out.",
-          "We [had been queuing|過去某點之前持續進行→過去完成進行式|t_past_perfect_cont] for tickets for an hour before the counter [opened|較後動作→簡單過去式|t_simple_past].",
-          "The students [had already left|較早發生→過去完成式|t_past_perfect] the hall when the headmaster [arrived|較後動作→簡單過去式|t_simple_past].",
-          "I [met|last week→簡單過去式|t_simple_past] John last week. He [had just returned|在 met 之前已發生→過去完成式|t_past_perfect] from Australia.",
-          "She [is taking|now→現在進行式|t_present_continuous] a rest now because she [has been feeling|all day 持續→現在完成進行式|t_present_perfect_cont] tired all day.",
-          "Have you ever [visited|ever（經驗）→現在完成式，have/has + 過去分詞|t_present_perfect] the Space Museum?",
-          "They [are building|正在興建→現在進行式|t_present_continuous] a new library near our school; they [will have finished|by next year→未來完成式|t_future_perfect] it by next year.",
-          "This time next week, I [will be sunbathing|未來某時間點正在進行→未來進行式|t_future_continuous] on a beach in Thailand."
+        "title": "Exercise 2",
+        "tag": "Fill in the blanks（混合時態）",
+        "type": "input",
+        "items": [
+          "Don't switch off the TV. I [am still watching|still watch|現在正在進行→現在進行式|t_present_continuous] the news.",
+          "She [has lost|lose|過去動作影響現在→現在完成式|t_present_perfect] her keys, so she [cannot|cannot|現在的能力／狀態|t_simple_present] get into her flat now.",
+          "Last night, while we [were having|have|while + 長動作→過去進行式|t_past_continuous] dinner, the lights [went|go|短動作→簡單過去式|t_simple_past] out.",
+          "We [had been queuing|queue|過去某點之前持續進行→過去完成進行式|t_past_perfect_cont] for tickets for an hour before the counter [opened|open|較後動作→簡單過去式|t_simple_past].",
+          "The students [had already left|already leave|較早發生→過去完成式|t_past_perfect] the hall when the headmaster [arrived|arrive|較後動作→簡單過去式|t_simple_past].",
+          "I [met|meet|last week→簡單過去式|t_simple_past] John last week. He [had just returned|just return|在 met 之前已發生→過去完成式|t_past_perfect] from Australia.",
+          "She [is taking|take|now→現在進行式|t_present_continuous] a rest now because she [has been feeling|feel|all day 持續→現在完成進行式|t_present_perfect_cont] tired all day.",
+          "Have you ever [visited|visit|ever（經驗）→現在完成式，have/has + 過去分詞|t_present_perfect] the Space Museum?",
+          "They [are building|build|正在興建→現在進行式|t_present_continuous] a new library near our school; they [will have finished|finish|by next year→未來完成式|t_future_perfect] it by next year.",
+          "This time next week, I [will be sunbathing|sunbathe|未來某時間點正在進行→未來進行式|t_future_continuous] on a beach in Thailand."
         ]
       },
       {
-        title: "Exercise 3", tag: "Fill in the blanks（混合時態）", type: "input",
-        items: [
-          "The phone [rang|短動作→簡單過去式|t_simple_past] while he [was driving|while + 長動作→過去進行式|t_past_continuous], but he [didn't answer/did not answer|簡單過去式否定|t_simple_past] it.",
-          "By the time you [come|by the time 後的子句→簡單現在式表未來|t_present_future] home, I [will have cooked|到那時已完成→未來完成式|t_future_perfect] dinner.",
-          "I [have read|already + 次數→現在完成式|t_present_perfect] that novel twice already. It's brilliant.",
-          "She [hasn't been/has not been|for ages→現在完成式|t_present_perfect] to the cinema for ages because she [has been|現在仍忙碌→現在完成式|t_present_perfect] too busy.",
-          "When the alarm [rang|短動作→簡單過去式|t_simple_past], everyone [ran|接著發生的動作→簡單過去式|t_simple_past] out of the building.",
-          "He [has lived/has been living|since 2018→現在完成式／完成進行式|t_present_perfect] in this flat since 2018.",
-          "We [have been waiting|for two hours 持續到現在→現在完成進行式|t_present_perfect_cont] for the doctor for two hours and we [are still waiting|still + now→現在進行式|t_present_continuous].",
-          "I [had never seen|before 之前的經驗→過去完成式|t_past_perfect] such a beautiful sunset before I [visited|較後動作→簡單過去式|t_simple_past] the island.",
-          "Don't worry about the tickets. I [will book|當下臨時決定→will|t_will] them online.",
-          "She [was studying|我上一次看到她時正在做→過去進行式|t_past_continuous] in the library when I last [saw|last→簡單過去式|t_simple_past] her."
+        "title": "Exercise 3",
+        "tag": "Fill in the blanks（混合時態）",
+        "type": "input",
+        "items": [
+          "The phone [rang|ring|短動作→簡單過去式|t_simple_past] while he [was driving|drive|while + 長動作→過去進行式|t_past_continuous], but he [didn't answer/did not answer|not answer|簡單過去式否定|t_simple_past] it.",
+          "By the time you [come|come|by the time 後的子句→簡單現在式表未來|t_present_future] home, I [will have cooked|cook|到那時已完成→未來完成式|t_future_perfect] dinner.",
+          "I [have read|read|already + 次數→現在完成式|t_present_perfect] that novel twice already. It's brilliant.",
+          "She [hasn't been/has not been|not be|for ages→現在完成式|t_present_perfect] to the cinema for ages because she [has been|be|現在仍忙碌→現在完成式|t_present_perfect] too busy.",
+          "When the alarm [rang|ring|短動作→簡單過去式|t_simple_past], everyone [ran|run|接著發生的動作→簡單過去式|t_simple_past] out of the building.",
+          "He [has lived/has been living|live|since 2018→現在完成式／完成進行式|t_present_perfect] in this flat since 2018.",
+          "We [have been waiting|wait|for two hours 持續到現在→現在完成進行式|t_present_perfect_cont] for the doctor for two hours and we [are still waiting|still wait|still + now→現在進行式|t_present_continuous].",
+          "I [had never seen|never see|before 之前的經驗→過去完成式|t_past_perfect] such a beautiful sunset before I [visited|visit|較後動作→簡單過去式|t_simple_past] the island.",
+          "Don't worry about the tickets. I [will book|book|當下臨時決定→will|t_will] them online.",
+          "She [was studying|study|我上一次看到她時正在做→過去進行式|t_past_continuous] in the library when I last [saw|see|last→簡單過去式|t_simple_past] her."
         ]
       },
       {
-        title: "Exercise 4", tag: "Sentence rewrite（改寫句子）", type: "input",
-        instr: "用括號內的字改寫句子，把第二句完成，意思不變。",
-        items: [
+        "title": "Exercise 4",
+        "tag": "Sentence rewrite（改寫句子）",
+        "type": "input",
+        "instr": "用括號內的字改寫句子，把第二句完成，意思不變。",
+        "items": [
           "I [haven't seen/have not seen|last saw＝最後一次見→改寫成現在完成式 since／for|t_present_perfect] my friend for two years.",
           "When I arrived, the film [had already begun/had already started|電影在我到達前已開始→過去完成式|t_past_perfect].",
           "She [has been|五年前開始、至今持續→現在完成進行式 has been learning|t_present_perfect_cont] learning French for five years.",
@@ -450,9 +495,11 @@ const SUBJECTS = [
         ]
       },
       {
-        title: "Exercise 5", tag: "Sentence rewrite（改寫句子）", type: "input",
-        instr: "用括號內的字改寫句子，完成空格，意思不變。",
-        items: [
+        "title": "Exercise 5",
+        "tag": "Sentence rewrite（改寫句子）",
+        "type": "input",
+        "instr": "用括號內的字改寫句子，完成空格，意思不變。",
+        "items": [
           "The lights went out [while|while 連接兩個過去動作|t_past_continuous] I [was having|長動作→過去進行式|t_past_continuous] dinner.",
           "She [had never seen|較早的經驗→過去完成式|t_past_perfect] snow [until|until＝直到|t_past_perfect] she visited Japan.",
           "When he [had spoken|先講完話→過去完成式|t_past_perfect], he sat down.",
@@ -464,65 +511,339 @@ const SUBJECTS = [
         ]
       },
       {
-        title: "Exercise 6", tag: "Multiple choice（12 題）", type: "mc",
-        items: [
-          { q: "I ______ my homework when you called me last night.", opts: ["do","was doing","have done","had done"], ans: 1, zh: "昨晚你打來時我正在做功課→過去某時刻進行中→過去進行式 was/were + V-ing", recap: "t_past_continuous" },
-          { q: "By the time we reached the cinema, the film ______.", opts: ["started","has started","had started","was starting"], ans: 2, zh: "電影在我們到達前已開始→兩個過去動作中較早的用過去完成式", recap: "t_past_perfect" },
-          { q: "She ______ in this company since 2019.", opts: ["works","worked","has worked","is working"], ans: 2, zh: "since 2019 從過去持續到現在→現在完成式", recap: "t_present_perfect" },
-          { q: "Look! It ______. Take an umbrella.", opts: ["rains","is raining","has rained","rained"], ans: 1, zh: "Look! 表示正在發生→現在進行式", recap: "t_present_continuous" },
-          { q: "We ______ a party next Saturday. Would you like to come?", opts: ["have","had","are having","will having"], ans: 2, zh: "已安排好的未來計劃→現在進行式表未來", recap: "t_present_future" },
-          { q: "I ______ three cups of coffee so far today.", opts: ["drink","drank","am drinking","have drunk"], ans: 3, zh: "so far（目前為止）→現在完成式", recap: "t_present_perfect" },
-          { q: "While Mum ______ in the kitchen, I ______ my room.", opts: ["cooked, cleaned","was cooking, cleaned","cooked, was cleaning","was cooking, was cleaning"], ans: 3, zh: "兩個過去同時進行的動作→都用過去進行式", recap: "t_past_continuous" },
-          { q: "The students ______ the hall before the headmaster arrived.", opts: ["left","have left","had left","were leaving"], ans: 2, zh: "學生在校長到達前已離開→過去完成式", recap: "t_past_perfect" },
-          { q: "This time tomorrow, I ______ on a plane to London.", opts: ["sit","will sit","will be sitting","am sitting"], ans: 2, zh: "未來某時間點正在進行→未來進行式 will be + V-ing", recap: "t_future_continuous" },
-          { q: "He ______ his keys, so he can't open the door now.", opts: ["loses","lost","has lost","had lost"], ans: 2, zh: "過去動作影響現在（開不了門）→現在完成式", recap: "t_present_perfect" },
-          { q: "I'm sure our team ______ the match tomorrow.", opts: ["wins","will win","is winning","has won"], ans: 1, zh: "I'm sure 表猜測→will + 原形", recap: "t_will" },
-          { q: "She ______ the piano every day when she was young.", opts: ["plays","played","was playing","has played"], ans: 1, zh: "過去習慣動作→簡單過去式", recap: "t_simple_past" }
+        "title": "Exercise 6",
+        "tag": "Multiple choice（12 題）",
+        "type": "mc",
+        "items": [
+          {
+            "q": "I ______ my homework when you called me last night.",
+            "opts": [
+              "do",
+              "was doing",
+              "have done",
+              "had done"
+            ],
+            "ans": 1,
+            "zh": "昨晚你打來時我正在做功課→過去某時刻進行中→過去進行式 was/were + V-ing",
+            "recap": "t_past_continuous"
+          },
+          {
+            "q": "By the time we reached the cinema, the film ______.",
+            "opts": [
+              "started",
+              "has started",
+              "had started",
+              "was starting"
+            ],
+            "ans": 2,
+            "zh": "電影在我們到達前已開始→兩個過去動作中較早的用過去完成式",
+            "recap": "t_past_perfect"
+          },
+          {
+            "q": "She ______ in this company since 2019.",
+            "opts": [
+              "works",
+              "worked",
+              "has worked",
+              "is working"
+            ],
+            "ans": 2,
+            "zh": "since 2019 從過去持續到現在→現在完成式",
+            "recap": "t_present_perfect"
+          },
+          {
+            "q": "Look! It ______. Take an umbrella.",
+            "opts": [
+              "rains",
+              "is raining",
+              "has rained",
+              "rained"
+            ],
+            "ans": 1,
+            "zh": "Look! 表示正在發生→現在進行式",
+            "recap": "t_present_continuous"
+          },
+          {
+            "q": "We ______ a party next Saturday. Would you like to come?",
+            "opts": [
+              "have",
+              "had",
+              "are having",
+              "will having"
+            ],
+            "ans": 2,
+            "zh": "已安排好的未來計劃→現在進行式表未來",
+            "recap": "t_present_future"
+          },
+          {
+            "q": "I ______ three cups of coffee so far today.",
+            "opts": [
+              "drink",
+              "drank",
+              "am drinking",
+              "have drunk"
+            ],
+            "ans": 3,
+            "zh": "so far（目前為止）→現在完成式",
+            "recap": "t_present_perfect"
+          },
+          {
+            "q": "While Mum ______ in the kitchen, I ______ my room.",
+            "opts": [
+              "cooked, cleaned",
+              "was cooking, cleaned",
+              "cooked, was cleaning",
+              "was cooking, was cleaning"
+            ],
+            "ans": 3,
+            "zh": "兩個過去同時進行的動作→都用過去進行式",
+            "recap": "t_past_continuous"
+          },
+          {
+            "q": "The students ______ the hall before the headmaster arrived.",
+            "opts": [
+              "left",
+              "have left",
+              "had left",
+              "were leaving"
+            ],
+            "ans": 2,
+            "zh": "學生在校長到達前已離開→過去完成式",
+            "recap": "t_past_perfect"
+          },
+          {
+            "q": "This time tomorrow, I ______ on a plane to London.",
+            "opts": [
+              "sit",
+              "will sit",
+              "will be sitting",
+              "am sitting"
+            ],
+            "ans": 2,
+            "zh": "未來某時間點正在進行→未來進行式 will be + V-ing",
+            "recap": "t_future_continuous"
+          },
+          {
+            "q": "He ______ his keys, so he can't open the door now.",
+            "opts": [
+              "loses",
+              "lost",
+              "has lost",
+              "had lost"
+            ],
+            "ans": 2,
+            "zh": "過去動作影響現在（開不了門）→現在完成式",
+            "recap": "t_present_perfect"
+          },
+          {
+            "q": "I'm sure our team ______ the match tomorrow.",
+            "opts": [
+              "wins",
+              "will win",
+              "is winning",
+              "has won"
+            ],
+            "ans": 1,
+            "zh": "I'm sure 表猜測→will + 原形",
+            "recap": "t_will"
+          },
+          {
+            "q": "She ______ the piano every day when she was young.",
+            "opts": [
+              "plays",
+              "played",
+              "was playing",
+              "has played"
+            ],
+            "ans": 1,
+            "zh": "過去習慣動作→簡單過去式",
+            "recap": "t_simple_past"
+          }
         ]
       },
       {
-        title: "Exercise 7", tag: "Multiple choice（12 題）", type: "mc",
-        items: [
-          { q: "How long ______ you ______ here?", opts: ["did, live","have, lived","do, live","are, living"], ans: 1, zh: "How long + 持續到現在→現在完成式", recap: "t_present_perfect" },
-          { q: "The baby ______ all morning. He must be tired.", opts: ["cries","cried","has been crying","is crying"], ans: 2, zh: "all morning 持續到現在→現在完成進行式", recap: "t_present_perfect_cont" },
-          { q: "Don't disturb me. I ______ an important letter.", opts: ["write","wrote","am writing","have written"], ans: 2, zh: "正在做→現在進行式", recap: "t_present_continuous" },
-          { q: "When I ______ young, I ______ to school by bus.", opts: ["was, went","am, go","was, was going","have been, went"], ans: 0, zh: "過去的狀態與習慣→簡單過去式", recap: "t_simple_past" },
-          { q: "She ______ a shower when the earthquake happened.", opts: ["takes","took","was taking","has taken"], ans: 2, zh: "地震發生時正在沖涼→過去進行式", recap: "t_past_continuous" },
-          { q: "We ______ our new house by the end of this month.", opts: ["move into","will move into","will have moved into","are moving into"], ans: 2, zh: "by the end of this month 之前完成→未來完成式", recap: "t_future_perfect" },
-          { q: "I ______ never ______ such a funny film before.", opts: ["have, seen","had, seen","did, see","was, seeing"], ans: 0, zh: "never + before 經驗→現在完成式", recap: "t_present_perfect" },
-          { q: "The train ______ at 7:30 every morning.", opts: ["leave","leaves","is leaving","left"], ans: 1, zh: "固定時間表→簡單現在式（主語第三人稱加 -s）", recap: "t_simple_present" },
-          { q: "He ______ for ten years before he retired.", opts: ["taught","has taught","had taught","was teaching"], ans: 2, zh: "退休前已教十年→過去完成式", recap: "t_past_perfect" },
-          { q: "______ you ______ the new library yet?", opts: ["Have, visited","Did, visit","Do, visit","Are, visiting"], ans: 0, zh: "yet→現在完成式疑問句", recap: "t_present_perfect" },
-          { q: "It ______. The ground is wet.", opts: ["rained","was raining","has rained","had rained"], ans: 2, zh: "地面濕＝過去動作的現在結果→現在完成式", recap: "t_present_perfect" },
-          { q: "Look out! That car ______ hit you!", opts: ["will","is going to","is","was going to"], ans: 1, zh: "眼前立即的危險／證據→be going to", recap: "t_going_to" }
+        "title": "Exercise 7",
+        "tag": "Multiple choice（12 題）",
+        "type": "mc",
+        "items": [
+          {
+            "q": "How long ______ you ______ here?",
+            "opts": [
+              "did, live",
+              "have, lived",
+              "do, live",
+              "are, living"
+            ],
+            "ans": 1,
+            "zh": "How long + 持續到現在→現在完成式",
+            "recap": "t_present_perfect"
+          },
+          {
+            "q": "The baby ______ all morning. He must be tired.",
+            "opts": [
+              "cries",
+              "cried",
+              "has been crying",
+              "is crying"
+            ],
+            "ans": 2,
+            "zh": "all morning 持續到現在→現在完成進行式",
+            "recap": "t_present_perfect_cont"
+          },
+          {
+            "q": "Don't disturb me. I ______ an important letter.",
+            "opts": [
+              "write",
+              "wrote",
+              "am writing",
+              "have written"
+            ],
+            "ans": 2,
+            "zh": "正在做→現在進行式",
+            "recap": "t_present_continuous"
+          },
+          {
+            "q": "When I ______ young, I ______ to school by bus.",
+            "opts": [
+              "was, went",
+              "am, go",
+              "was, was going",
+              "have been, went"
+            ],
+            "ans": 0,
+            "zh": "過去的狀態與習慣→簡單過去式",
+            "recap": "t_simple_past"
+          },
+          {
+            "q": "She ______ a shower when the earthquake happened.",
+            "opts": [
+              "takes",
+              "took",
+              "was taking",
+              "has taken"
+            ],
+            "ans": 2,
+            "zh": "地震發生時正在沖涼→過去進行式",
+            "recap": "t_past_continuous"
+          },
+          {
+            "q": "We ______ our new house by the end of this month.",
+            "opts": [
+              "move into",
+              "will move into",
+              "will have moved into",
+              "are moving into"
+            ],
+            "ans": 2,
+            "zh": "by the end of this month 之前完成→未來完成式",
+            "recap": "t_future_perfect"
+          },
+          {
+            "q": "I ______ never ______ such a funny film before.",
+            "opts": [
+              "have, seen",
+              "had, seen",
+              "did, see",
+              "was, seeing"
+            ],
+            "ans": 0,
+            "zh": "never + before 經驗→現在完成式",
+            "recap": "t_present_perfect"
+          },
+          {
+            "q": "The train ______ at 7:30 every morning.",
+            "opts": [
+              "leave",
+              "leaves",
+              "is leaving",
+              "left"
+            ],
+            "ans": 1,
+            "zh": "固定時間表→簡單現在式（主語第三人稱加 -s）",
+            "recap": "t_simple_present"
+          },
+          {
+            "q": "He ______ for ten years before he retired.",
+            "opts": [
+              "taught",
+              "has taught",
+              "had taught",
+              "was teaching"
+            ],
+            "ans": 2,
+            "zh": "退休前已教十年→過去完成式",
+            "recap": "t_past_perfect"
+          },
+          {
+            "q": "______ you ______ the new library yet?",
+            "opts": [
+              "Have, visited",
+              "Did, visit",
+              "Do, visit",
+              "Are, visiting"
+            ],
+            "ans": 0,
+            "zh": "yet→現在完成式疑問句",
+            "recap": "t_present_perfect"
+          },
+          {
+            "q": "It ______. The ground is wet.",
+            "opts": [
+              "rained",
+              "was raining",
+              "has rained",
+              "had rained"
+            ],
+            "ans": 2,
+            "zh": "地面濕＝過去動作的現在結果→現在完成式",
+            "recap": "t_present_perfect"
+          },
+          {
+            "q": "Look out! That car ______ hit you!",
+            "opts": [
+              "will",
+              "is going to",
+              "is",
+              "was going to"
+            ],
+            "ans": 1,
+            "zh": "眼前立即的危險／證據→be going to",
+            "recap": "t_going_to"
+          }
         ]
       },
       {
-        title: "Exercise 8", tag: "Passage cloze（短文填充）", type: "input",
-        instr: "用括號內動詞的正確形式完成短文。",
-        items: [
-          "When I [was|過去→簡單過去式|t_simple_past] fourteen, my father [took|過去→簡單過去式|t_simple_past] me on my first camping trip in Sai Kung. We [had been planning|在出發前已計劃數週→過去完成進行式|t_past_perfect_cont] the trip for weeks, and I [had been looking forward|一直期待→過去完成進行式|t_past_perfect_cont] to it eagerly. On the day of departure, however, I [overslept|過去→簡單過去式|t_simple_past] because my alarm clock [had stopped|在睡過頭之前已壞→過去完成式|t_past_perfect] working during the night. By the time we [left|過去→簡單過去式|t_simple_past] the house, the sky [had already turned|在離開前已變灰→過去完成式|t_past_perfect] grey.",
-          "“Don't worry,” my father [said|過去→簡單過去式|t_simple_past]. “The weather [will improve|父親的預測→will|t_will] later.” I [didn't believe/did not believe|過去否定→簡單過去式|t_simple_past] him, but I [decided|過去→簡單過去式|t_simple_past] to stay positive. While we [were driving|while + 長動作→過去進行式|t_past_continuous] along the winding country road, heavy rain suddenly [poured|短動作突然發生→簡單過去式|t_simple_past] down. The visibility [became|過去→簡單過去式|t_simple_past] so poor that my father [had|過去→簡單過去式（have to 的過去式）|t_simple_past] to pull over. We [sat|過去→簡單過去式|t_simple_past] in the car for nearly two hours, listening to the thunder. I [had never felt|到那時為止從未→過去完成式|t_past_perfect] so disappointed in my life.",
-          "Eventually, the rain [eased|過去→簡單過去式|t_simple_past] and we [reached|過去→簡單過去式|t_simple_past] the campsite late in the evening, exhausted but relieved. Since that trip, I [have always packed|since that trip 之後至今→現在完成式|t_present_perfect] a spare alarm clock whenever I go camping."
+        "title": "Exercise 8",
+        "tag": "Passage cloze（短文填充）",
+        "type": "input",
+        "instr": "用括號內動詞的正確形式完成短文。",
+        "items": [
+          "When I [was|be|過去→簡單過去式|t_simple_past] fourteen, my father [took|take|過去→簡單過去式|t_simple_past] me on my first camping trip in Sai Kung. We [had been planning|plan|在出發前已計劃數週→過去完成進行式|t_past_perfect_cont] the trip for weeks, and I [had been looking forward|look forward|一直期待→過去完成進行式|t_past_perfect_cont] to it eagerly. On the day of departure, however, I [overslept|oversleep|過去→簡單過去式|t_simple_past] because my alarm clock [had stopped|stop|在睡過頭之前已壞→過去完成式|t_past_perfect] working during the night. By the time we [left|leave|過去→簡單過去式|t_simple_past] the house, the sky [had already turned|already turn|在離開前已變灰→過去完成式|t_past_perfect] grey.",
+          "“Don't worry,” my father [said|say|過去→簡單過去式|t_simple_past]. “The weather [will improve|improve|父親的預測→will|t_will] later.” I [didn't believe/did not believe|not believe|過去否定→簡單過去式|t_simple_past] him, but I [decided|decide|過去→簡單過去式|t_simple_past] to stay positive. While we [were driving|drive|while + 長動作→過去進行式|t_past_continuous] along the winding country road, heavy rain suddenly [poured|pour|短動作突然發生→簡單過去式|t_simple_past] down. The visibility [became|become|過去→簡單過去式|t_simple_past] so poor that my father [had|have|過去→簡單過去式（have to 的過去式）|t_simple_past] to pull over. We [sat|sit|過去→簡單過去式|t_simple_past] in the car for nearly two hours, listening to the thunder. I [had never felt|never feel|到那時為止從未→過去完成式|t_past_perfect] so disappointed in my life.",
+          "Eventually, the rain [eased|ease|過去→簡單過去式|t_simple_past] and we [reached|reach|過去→簡單過去式|t_simple_past] the campsite late in the evening, exhausted but relieved. Since that trip, I [have always packed|always pack|since that trip 之後至今→現在完成式|t_present_perfect] a spare alarm clock whenever I go camping."
         ]
       },
       {
-        title: "Exercise 9", tag: "Passage cloze（短文填充）", type: "input",
-        instr: "用括號內動詞的正確形式完成短文。",
-        items: [
-          "This summer, I [decided|過去→簡單過去式|t_simple_past] to look for a part-time job instead of staying at home. For years, I [had relied|在決定找工作之前→過去完成式|t_past_perfect] on my parents for pocket money, and I [wanted|過去→簡單過去式|t_simple_past] to become more independent. After I [had sent|在咖啡店打來之前已寄→過去完成式|t_past_perfect] out more than ten applications, a small café finally [called|過去→簡單過去式|t_simple_past] me for an interview.",
-          "On the day of the interview, I [woke|過去→簡單過去式|t_simple_past] up extra early. I [had been practising|整個星期持續練習→過去完成進行式|t_past_perfect_cont] answering common interview questions all week, so I [felt|過去→簡單過去式|t_simple_past] fairly confident. However, when I [arrived|過去→簡單過去式|t_simple_past], the manager [had already interviewed|在我到達前已面試→過去完成式|t_past_perfect] two other candidates. I [waited|過去→簡單過去式|t_simple_past] nervously outside for what felt like forever. Just as I [was wondering|當時正在想→過去進行式|t_past_continuous] whether I should give up, the door [opened|短動作→簡單過去式|t_simple_past] and the manager [called|短動作→簡單過去式|t_simple_past] my name.",
-          "“Relax,” she [smiled|過去→簡單過去式|t_simple_past]. “We [have decided|already + 已決定→現在完成式|t_present_perfect] to hire you already. You [are|現在→簡單現在式|t_simple_present] the most enthusiastic applicant we [have ever met|ever + 經驗→現在完成式|t_present_perfect].”",
-          "I could hardly believe it. I [have been working|for a month 持續到現在→現在完成進行式|t_present_perfect_cont] at the café for a month now, and I [have been enjoying|持續享受→現在完成進行式|t_present_perfect_cont] every moment. Next week, I [will use|next week→will|t_will] my first salary to buy my mother a birthday present. I am sure she [will be|未來→will|t_will] proud of me."
+        "title": "Exercise 9",
+        "tag": "Passage cloze（短文填充）",
+        "type": "input",
+        "instr": "用括號內動詞的正確形式完成短文。",
+        "items": [
+          "This summer, I [decided|decide|過去→簡單過去式|t_simple_past] to look for a part-time job instead of staying at home. For years, I [had relied|rely|在決定找工作之前→過去完成式|t_past_perfect] on my parents for pocket money, and I [wanted|want|過去→簡單過去式|t_simple_past] to become more independent. After I [had sent|send|在咖啡店打來之前已寄→過去完成式|t_past_perfect] out more than ten applications, a small café finally [called|call|過去→簡單過去式|t_simple_past] me for an interview.",
+          "On the day of the interview, I [woke|wake|過去→簡單過去式|t_simple_past] up extra early. I [had been practising|practise|整個星期持續練習→過去完成進行式|t_past_perfect_cont] answering common interview questions all week, so I [felt|feel|過去→簡單過去式|t_simple_past] fairly confident. However, when I [arrived|arrive|過去→簡單過去式|t_simple_past], the manager [had already interviewed|already interview|在我到達前已面試→過去完成式|t_past_perfect] two other candidates. I [waited|wait|過去→簡單過去式|t_simple_past] nervously outside for what felt like forever. Just as I [was wondering|wonder|當時正在想→過去進行式|t_past_continuous] whether I should give up, the door [opened|open|短動作→簡單過去式|t_simple_past] and the manager [called|call|短動作→簡單過去式|t_simple_past] my name.",
+          "“Relax,” she [smiled|smile|過去→簡單過去式|t_simple_past]. “We [have decided|decide|already + 已決定→現在完成式|t_present_perfect] to hire you already. You [are|be|現在→簡單現在式|t_simple_present] the most enthusiastic applicant we [have ever met|ever meet|ever + 經驗→現在完成式|t_present_perfect].”",
+          "I could hardly believe it. I [have been working|work|for a month 持續到現在→現在完成進行式|t_present_perfect_cont] at the café for a month now, and I [have been enjoying|enjoy|持續享受→現在完成進行式|t_present_perfect_cont] every moment. Next week, I [will use|use|next week→will|t_will] my first salary to buy my mother a birthday present. I am sure she [will be|be|未來→will|t_will] proud of me."
         ]
       },
       {
-        title: "Exercise 10", tag: "Passage cloze（短文填充）", type: "input",
-        instr: "用括號內動詞的正確形式完成短文。",
-        items: [
-          "Last Friday [was|過去→簡單過去式|t_simple_past] the day of the inter-school basketball final. Our team [had been preparing|一整年持續準備→過去完成進行式|t_past_perfect_cont] for this match for the whole year. We [trained|過去習慣→簡單過去式|t_simple_past] every evening, and our coach [never let|過去習慣→簡單過去式|t_simple_past] us rest until we [had perfected|在休息之前已練熟→過去完成式|t_past_perfect] every move.",
-          "In the first half, we [played|過去→簡單過去式|t_simple_past] terribly. By half-time, the other team [had already scored|by half-time 之前已→過去完成式|t_past_perfect] twenty more points than us. While we [were sitting|while + 長動作→過去進行式|t_past_continuous] in the changing room, our captain [gave|過去→簡單過去式|t_simple_past] an inspiring speech. “We [are not going to lose|堅決不輸→be going to（否定）|t_going_to] this match,” he [shouted|過去→簡單過去式|t_simple_past]. “We [have come|走到這一步（結果影響現在）→現在完成式|t_present_perfect] this far, and we [will not throw|未來→will（否定）|t_will] it away now.”",
-          "The second half [was|過去→簡單過去式|t_simple_past] completely different. We [played|過去→簡單過去式|t_simple_past] with such energy that the crowd [cheered|過去→簡單過去式|t_simple_past] wildly. With only ten seconds left, I [managed|過去→簡單過去式|t_simple_past] to score the winning basket. The moment I [did|過去→簡單過去式|t_simple_past] that, the whole gymnasium [erupted|過去→簡單過去式|t_simple_past]. I [had never felt|before 之前從未→過去完成式|t_past_perfect] such joy before. Even now, I [still remember|現在仍記得→簡單現在式|t_simple_present] every detail of that afternoon. It [remains|現在→簡單現在式|t_simple_present] one of the happiest moments of my life."
+        "title": "Exercise 10",
+        "tag": "Passage cloze（短文填充）",
+        "type": "input",
+        "instr": "用括號內動詞的正確形式完成短文。",
+        "items": [
+          "Last Friday [was|be|過去→簡單過去式|t_simple_past] the day of the inter-school basketball final. Our team [had been preparing|prepare|一整年持續準備→過去完成進行式|t_past_perfect_cont] for this match for the whole year. We [trained|train|過去習慣→簡單過去式|t_simple_past] every evening, and our coach [never let|never let|過去習慣→簡單過去式|t_simple_past] us rest until we [had perfected|perfect|在休息之前已練熟→過去完成式|t_past_perfect] every move.",
+          "In the first half, we [played|play|過去→簡單過去式|t_simple_past] terribly. By half-time, the other team [had already scored|already score|by half-time 之前已→過去完成式|t_past_perfect] twenty more points than us. While we [were sitting|sit|while + 長動作→過去進行式|t_past_continuous] in the changing room, our captain [gave|give|過去→簡單過去式|t_simple_past] an inspiring speech. “We [are not going to lose|not lose|堅決不輸→be going to（否定）|t_going_to] this match,” he [shouted|shout|過去→簡單過去式|t_simple_past]. “We [have come|come|走到這一步（結果影響現在）→現在完成式|t_present_perfect] this far, and we [will not throw|not throw|未來→will（否定）|t_will] it away now.”",
+          "The second half [was|be|過去→簡單過去式|t_simple_past] completely different. We [played|play|過去→簡單過去式|t_simple_past] with such energy that the crowd [cheered|cheer|過去→簡單過去式|t_simple_past] wildly. With only ten seconds left, I [managed|manage|過去→簡單過去式|t_simple_past] to score the winning basket. The moment I [did|do|過去→簡單過去式|t_simple_past] that, the whole gymnasium [erupted|erupt|過去→簡單過去式|t_simple_past]. I [had never felt|never feel|before 之前從未→過去完成式|t_past_perfect] such joy before. Even now, I [still remember|still remember|現在仍記得→簡單現在式|t_simple_present] every detail of that afternoon. It [remains|remain|現在→簡單現在式|t_simple_present] one of the happiest moments of my life."
         ]
       }
     ]
@@ -530,17 +851,21 @@ const SUBJECTS = [
 ];
 
 /* ===================== 引擎 ===================== */
-function norm(s) { return String(s).toLowerCase().replace(/\s+/g, ' ').trim(); }
+function norm(s) { return String(s).toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/\s+/g, ' ').trim(); }
 function display(word, cap) { return cap ? word.charAt(0).toUpperCase() + word.slice(1) : word; }
 
 function parseMarkup(s) {
   const tokens = [];
-  const re = /\[([^\]|]+)\|([^\]|]*)\|([^\]|]*)\]/g;
+  const re = /\[([^\]]+)\]/g;
   let last = 0, m;
   while ((m = re.exec(s))) {
     if (m.index > last) tokens.push({ t: s.slice(last, m.index) });
-    const ans = m[1].split('/').map(x => norm(x));
-    tokens.push({ blank: true, answers: ans, primary: m[1].split('/')[0].trim(), zh: m[2] || '', recap: m[3] || '', cap: m.index === 0 });
+    const parts = m[1].split('|');
+    const ans = parts[0].split('/').map(x => norm(x));
+    let base = null, zh = '', recap = '';
+    if (parts.length >= 4) { base = parts[1]; zh = parts[2] || ''; recap = parts[3] || ''; }
+    else { zh = parts[1] || ''; recap = parts[2] || ''; }
+    tokens.push({ blank: true, answers: ans, primary: parts[0].split('/')[0].trim(), base, zh, recap, cap: m.index === 0 });
     last = m.index + m[0].length;
   }
   if (last < s.length) tokens.push({ t: s.slice(last) });
@@ -656,6 +981,12 @@ function renderInputBlank(tok, st) {
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') submitInput(inp, st); });
   inp.addEventListener('blur', () => submitInput(inp, st));
   wrap.appendChild(inp);
+  if (tok.base) {
+    const h = document.createElement('span');
+    h.className = 'base-hint';
+    h.textContent = '(' + tok.base + ')';
+    wrap.appendChild(h);
+  }
   st.answerables.push(inp);
   st.total++;
   return wrap;
@@ -863,6 +1194,7 @@ function init() {
   tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.subject)));
   activate('prepositions');
 }
+
 
 init();
 </script>
