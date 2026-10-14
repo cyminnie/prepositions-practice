@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>英文文法練習 — 介詞 & 時態</title>
+<title>英文文法練習 — 介詞、時態 & Linking Words</title>
 <style>
   :root { --green:#1a7f37; --green-bg:#d9f3e1; --red:#c62828; --red-bg:#ffe3e3; --accent:#4f6ef7; --line:#e3e8f0; }
   * { box-sizing: border-box; }
@@ -160,9 +160,10 @@
 <body>
   <aside class="sidebar">
     <p class="brand">Grammar Practice</p>
-    <p class="brand-sub">介詞 · 時態 · 詞彙 · 聆聽</p>
+    <p class="brand-sub">介詞 · 時態 · Linking Words · 詞彙 · 聆聽</p>
     <button class="tab" data-subject="prepositions">介詞 <span class="tab-note">Prepositions · 5 份</span></button>
     <button class="tab" data-subject="tenses">時態 <span class="tab-note">Tenses · 10 份</span></button>
+    <button class="tab" data-subject="linking-words">連接詞 <span class="tab-note">Linking Words · 26 題</span></button>
     <button class="tab" data-subject="vocab">詞彙 <span class="tab-note">Vocabulary · 高頻字</span></button>
     <button class="tab" data-subject="listening">聆聽 <span class="tab-note">Listening · A1</span></button>
   </aside>
@@ -874,6 +875,75 @@ const SUBJECTS = [
         ]
       }
     ]
+  },
+  {
+    "key": "linking-words",
+    "label": "連接詞 Linking Words",
+    "sub": "Addition · Examples · Choice · Time",
+    "exercises": [
+      {
+        "title": "Exercise 1",
+        "tag": "Linking words",
+        "type": "choice",
+        "instr": "點擊句中的空格，再從彈出的四個選項中圈選答案。",
+        "choiceSets": {
+          "and": ["and", "or", "before", "such as"],
+          "as well as": ["as well as", "or", "until", "for example"],
+          "plus": ["plus", "while", "including", "once"],
+          "also": ["also", "or", "before", "like"],
+          "besides": ["besides", "until", "such as", "when"],
+          "furthermore": ["furthermore", "or", "as", "before"],
+          "in addition": ["in addition", "while", "for instance", "until"],
+          "moreover": ["moreover", "or", "when", "including"],
+          "apart from": ["apart from", "as soon as", "such as", "whenever"],
+          "or": ["or", "and", "before", "like"],
+          "for example": ["for example", "while", "until", "as well as"],
+          "for instance": ["for instance", "when", "or", "apart from"],
+          "including": ["including", "before", "as soon as", "moreover"],
+          "like": ["like", "until", "furthermore", "when"],
+          "such as": ["such as", "while", "once", "plus"],
+          "as": ["as", "or", "before", "for example"],
+          "when": ["when", "moreover", "such as", "plus"],
+          "while": ["while", "in addition", "like", "or"],
+          "before": ["before", "also", "for instance", "as well as"],
+          "after": ["after", "furthermore", "including", "or"],
+          "by the time(that)": ["by the time(that)", "besides", "such as", "plus"],
+          "now that": ["now that", "or", "for example", "until"],
+          "as soon as": ["as soon as", "moreover", "like", "or"],
+          "once": ["once", "furthermore", "including", "as well as"],
+          "until": ["until", "also", "for instance", "such as"],
+          "whenever": ["whenever", "in addition", "or", "including"]
+        },
+        "items": [
+          "The tablet backs up your notes [and|兩項功能都會執行，連接並列動詞] syncs them to the cloud.",
+          "The position requires fluency in English [as well as|連接兩項工作要求] experience with spreadsheets.",
+          "The entrance fee covers the guided tour. [Plus|句首補充另一項包含的服務] visitors receive a free map.",
+          "The library lends books and [also|表示還提供另一項服務] offers free computer classes.",
+          "[Besides|句首表示除已有內容外還有另一項] her full-time job, Maya volunteers at an animal shelter.",
+          "The new timetable gives students more study time. [Furthermore|句首加入另一項支持理由] it reduces the number of late arrivals.",
+          "[In addition|句首補充一項額外設施] to the swimming pool, the hotel has a small gym.",
+          "The recipe is easy to follow. [Moreover|句首補充另一項正面特點] it uses ingredients that are easy to find.",
+          "[Apart from|放在名詞前，表示除主要展品外還有其他內容] the main exhibit, the museum has a room devoted to local history.",
+          "You can pay by credit card [or|表示二選一的付款方式] by bank transfer.",
+          "Some birds migrate thousands of kilometres; [for example|引出一個具體例子] Arctic terns travel between the Arctic and the Antarctic.",
+          "Many household objects can be reused. [For instance|句首引出一個完整句子的例子] glass jars make useful storage containers.",
+          "The farm grows several kinds of fruit, [including|直接列出其中一種水果] peaches, plums and apples.",
+          "At the weekend, we enjoy quiet activities [like|用名詞舉出活動例子] reading and gardening.",
+          "The shop sells tropical fruit [such as|列出多種水果作例子] mangoes, papayas and pineapples.",
+          "[As|表示因為；後面接完整子句說明原因] the roads were icy, the school opened two hours late.",
+          "Call me [when|表示在某個時間點做另一件事] you arrive at the station.",
+          "[While|連接同時持續進行的兩個動作] I was preparing dinner, my brother set the table.",
+          "Please switch off all the lights [before|表示先完成關燈，之後才離開] you leave the office.",
+          "[After|表示先完成會議，之後才休息] the meeting ended, the team went for lunch.",
+          "[By the time(that)|表示到某個時間點之前，另一動作已完成] the guests arrived, we had finished setting the table.",
+          "[Now that|表示新情況已成為事實，後面接完整子句] the exams are over, we can relax.",
+          "The alarm will ring [as soon as|表示第二件事緊接第一件事發生] the timer reaches zero.",
+          "[Once|表示某條件完成後，才開始下一步] you have saved the document, you can close the program.",
+          "Keep stirring the sauce [until|表示持續動作的終點] it becomes smooth.",
+          "[Whenever|表示每逢某種情況都會發生] Nina visits her grandparents, she helps them in the garden."
+        ]
+      }
+    ]
   }
 ];
 
@@ -964,14 +1034,14 @@ function openChoice(btn, choices, st) {
   btn.textContent = '';
   choices.forEach(c => {
     const b = document.createElement('button');
-    b.className = 'choice'; b.type = 'button'; b.textContent = c;
+    b.className = 'choice'; b.type = 'button'; b.textContent = display(c, cap);
     b.addEventListener('click', e => {
       e.stopPropagation();
       if (btn.dataset.state !== 'open') return;
       btn.dataset.state = 'done';
       btn.classList.remove('open');
       btn.textContent = '';
-      if (c === ans) {
+      if (norm(c) === norm(ans)) {
         const s = document.createElement('span'); s.className = 'fill correct'; s.textContent = display(c, cap);
         btn.appendChild(s); st.correct++;
       } else {
@@ -1141,7 +1211,7 @@ function renderSubject(subject) {
         const li = document.createElement('li');
         parseMarkup(s).forEach(tok => {
           if (tok.t) { li.appendChild(document.createTextNode(tok.t)); return; }
-          if (ex.type === 'choice') li.appendChild(renderChoiceBlank(tok, ex.choices, st));
+          if (ex.type === 'choice') li.appendChild(renderChoiceBlank(tok, (ex.choiceSets && ex.choiceSets[norm(tok.primary)]) || ex.choices, st));
           else li.appendChild(renderInputBlank(tok, st));
         });
         ol.appendChild(li);
